@@ -1,7 +1,7 @@
 database:
-  user: default
-  password: default
-  database: default
+  user: postgres
+  password: postgrespw
+  name: default
   url: jdbc:postgresql://localhost/
 i18n:
   languages:

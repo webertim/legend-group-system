@@ -1,6 +1,6 @@
 package com.github.webertim.legendgroupsystem.configuration;
 
-import com.github.webertim.legendgroupsystem.LegendGroupSystem;
+import com.github.webertim.legendgroupsystem.database.DatabaseOptions;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
@@ -30,9 +30,25 @@ public class BaseConfiguration {
         this.plugin.saveConfig();
     }
 
-    public void reload() {
-        this.plugin.saveConfig();
-        this.plugin.reloadConfig();
+    public DatabaseOptions getDatabaseOptions() {
+        return new DatabaseOptions(
+                configFile.getString(buildOptionPath(
+                        DATABASE_OPTIONS,
+                        URL_OPTION
+                )),
+                configFile.getString(buildOptionPath(
+                        DATABASE_OPTIONS,
+                        NAME_OPTION
+                )),
+                configFile.getString(buildOptionPath(
+                        DATABASE_OPTIONS,
+                        USER_OPTION
+                )),
+                configFile.getString(buildOptionPath(
+                        DATABASE_OPTIONS,
+                        PASSWORD_OPTION
+                ))
+        );
     }
 
     public @Nullable String getMessage(String languageKey, String messageKey) {
@@ -48,6 +64,11 @@ public class BaseConfiguration {
             )),
             messageKey
         );
+    }
+
+    public void reload() {
+        this.plugin.saveConfig();
+        this.plugin.reloadConfig();
     }
 
     private String buildOptionPath(String... options) {
