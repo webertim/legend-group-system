@@ -1,0 +1,14 @@
+database:
+  user: default
+  password: default
+  database: default
+  url: jdbc:postgresql://localhost/
+i18n:
+  languages:
+    de:
+      hello: "Hallo welt!"
+      test: "testDE"
+    en:
+      hello: "Hello world!"
+      test: "testEN"
+  defaultLanguage: de

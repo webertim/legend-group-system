@@ -1,4 +1,4 @@
-name: Legend Group System
+name: LegendGroupSystem
 version: '${project.version}'
 main: com.github.webertim.legendgroupsystem.LegendGroupSystem
 api-version: 1.19
