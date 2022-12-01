@@ -33,15 +33,9 @@ public class CreateGroupCommand extends BaseGroupCommand {
 
         Group newGroup = new Group(args[0], groupName, args[1]);
 
-        this.groupManager.createGroup(
+        this.groupManager.create(
                 newGroup,
-                success -> {
-                    String message = success ?
-                            this.config.getMessage("successCreateGroup") :
-                            this.config.getMessage("errorCreateGroup");
-
-                    sender.sendMessage(message);
-                }
+                this.getSuccessCallback("successCreateGroup", "errorCreateGroup", sender)
         );
 
         return true;

@@ -12,6 +12,8 @@ i18n:
       successUpdateGroup: "§aGruppe angepasst."
       errorDeleteGroup: "§cEs ist ein Fehler beim Löschen der Gruppe aufgetreten. Stelle sicher, dass die Gruppen-ID existiert."
       successDeleteGroup: "§aGruppe gelöscht."
+      errorDefaultGroup: "§cEs ist ein Fehler beim Setzen der Standard-Gruppe aufgetreten. Stelle sicher, dass die Gruppen-ID existiert."
+      successDefaultGroup: "§aStandard Gruppe gesetzt."
     en:
       errorCreateGroup: "§cThere was an error creating the group. Make sure the group ID is unique."
       successCreateGroup: "§aGroup created."
@@ -19,4 +21,6 @@ i18n:
       successUpdateGroup: "§aGroup updated."
       errorDeleteGroup: "§cThere was an error deleting the group. Make sure a group with the provided ID exists."
       successDeleteGroup: "§aGroup deleted."
+      errorDefaultGroup: "§cThere was an error setting the default group. Make sure a group with the provided ID exists."
+      successDefaultGroup: "§a Default group set."
   defaultLanguage: de

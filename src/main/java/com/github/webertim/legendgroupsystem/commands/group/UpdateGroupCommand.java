@@ -47,15 +47,9 @@ public class UpdateGroupCommand extends BaseGroupCommand {
 
         Group updatedGroup = new Group(args[1], groupName, prefix);
 
-        this.groupManager.updateGroupDiff(
+        this.groupManager.update(
             updatedGroup,
-            success -> {
-                String message = success ?
-                        this.config.getMessage("successUpdateGroup") :
-                        this.config.getMessage("errorUpdateGroup");
-
-                sender.sendMessage(message);
-            }
+            this.getSuccessCallback("successUpdateGroup", "errorUpdateGroup", sender)
         );
 
         return true;
@@ -66,7 +60,7 @@ public class UpdateGroupCommand extends BaseGroupCommand {
         if (args.length == 0) {
             return Arrays.asList(UPDATE_NAME_KEYWORD, UPDATE_PREFIX_KEYWORD);
         } else if (args.length == 1) {
-            return groupManager.getGroupIds().stream().toList();
+            return groupManager.getIds().stream().toList();
         } else if (args.length == 2) {
             Arrays.asList("<value>");
         }

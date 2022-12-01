@@ -5,6 +5,7 @@ import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
 import com.github.webertim.legendgroupsystem.commands.KeywordCommand;
 import com.github.webertim.legendgroupsystem.commands.group.CreateGroupCommand;
+import com.github.webertim.legendgroupsystem.commands.group.DefaultGroupCommand;
 import com.github.webertim.legendgroupsystem.commands.group.DeleteGroupCommand;
 import com.github.webertim.legendgroupsystem.commands.group.UpdateGroupCommand;
 import com.github.webertim.legendgroupsystem.configuration.BaseConfiguration;
@@ -35,7 +36,7 @@ public final class LegendGroupSystem extends JavaPlugin {
         }
 
         try {
-            this.groupManager = new GroupManager(databaseConnector, this);
+            this.groupManager = new GroupManager(this, databaseConnector.getGroupDao());
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -61,7 +62,8 @@ public final class LegendGroupSystem extends JavaPlugin {
         new KeywordCommand("group", new KeywordCommand[]{
             new KeywordCommand("create", new CreateGroupCommand(this.groupManager, this.config)),
             new KeywordCommand("update", new UpdateGroupCommand(this.groupManager, this.config)),
-            new KeywordCommand("delete", new DeleteGroupCommand(this.groupManager, this.config))
+            new KeywordCommand("delete", new DeleteGroupCommand(this.groupManager, this.config)),
+            new KeywordCommand("default", new DefaultGroupCommand(this.groupManager, this.config))
         }).register(this);
 
         new KeywordCommand("player", new KeywordCommand[]{
