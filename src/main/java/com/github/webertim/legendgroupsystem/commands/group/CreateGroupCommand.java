@@ -1,10 +1,8 @@
 package com.github.webertim.legendgroupsystem.commands.group;
 
-import com.github.webertim.legendgroupsystem.commands.CommandExecutorTabCompleter;
 import com.github.webertim.legendgroupsystem.configuration.BaseConfiguration;
 import com.github.webertim.legendgroupsystem.manager.GroupManager;
 import com.github.webertim.legendgroupsystem.model.Group;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -44,11 +42,11 @@ public class CreateGroupCommand extends BaseGroupCommand {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length <= 0) {
-            return Arrays.asList("<groupId>");
+            return List.of("<groupId>");
         } else if (args.length <= 1) {
-            return Arrays.asList("<groupPrefix>");
+            return List.of("<groupPrefix>");
         } else {
-            return Arrays.asList("<groupName>");
+            return List.of("<groupName>");
         }
     }
 }

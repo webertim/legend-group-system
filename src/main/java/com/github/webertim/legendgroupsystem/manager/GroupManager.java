@@ -3,8 +3,6 @@ package com.github.webertim.legendgroupsystem.manager;
 import com.github.webertim.legendgroupsystem.LegendGroupSystem;
 import com.github.webertim.legendgroupsystem.model.Group;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.PreparedUpdate;
-import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.stmt.UpdateBuilder;
 
 import java.sql.SQLException;
@@ -21,6 +19,11 @@ public class GroupManager extends BaseManager<String, Group> {
     public void update(Group data, Consumer<Boolean> finalTask) {
         Group targetGroup = this.get(data.getId());
 
+        if (targetGroup == null) {
+            finalTask.accept(false);
+            return;
+        }
+
         if (data.getPrefix() == null) {
             data.setPrefix(targetGroup.getPrefix());
         }
@@ -35,7 +38,7 @@ public class GroupManager extends BaseManager<String, Group> {
     public void updateDefaultGroup(Group group, Consumer<Boolean> lastTask) {
         this.createSuccessBasedTaskChain(
                 () -> {
-                    if (!(this.dataMap.containsKey(group.getId()))) {
+                    if (!(this.contains(group.getId()))) {
                         return 0;
                     }
                     UpdateBuilder<Group, String> updateBuilder = this.getDao().updateBuilder();

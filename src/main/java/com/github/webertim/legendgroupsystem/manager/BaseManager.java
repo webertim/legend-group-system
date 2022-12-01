@@ -10,13 +10,25 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
+/**
+ * This is an abstract class for managing database bound objects.
+ * Because in some cases special operations are required when interacting with the underlying data structure,
+ * no direct access is possible. Instead, the most important features of the underlying HashMap are provided with custom
+ * methods.
+ *
+ * If special operations are required, those methods should be overridden. For example the PlayerManager needs to also
+ * make an entry in a separate data structure for every player with expiring group rights. This can easily be done
+ * by overriding the {@link com.github.webertim.legendgroupsystem.manager.BaseManager#insert(Identifiable identifiable)}
+ * method which is also used internally by every method.
+ *
+ * @param <T>
+ * @param <V>
+ */
 public abstract class BaseManager<T, V extends Identifiable<T>> {
-    final HashMap<T, V> dataMap = new HashMap();
+    private final HashMap<T, V> dataMap = new HashMap();
     private final Dao<V, T> dataDao;
-    private final LegendGroupSystem legendGroupSystem;
+    protected final LegendGroupSystem legendGroupSystem;
 
     public BaseManager(LegendGroupSystem legendGroupSystem, Dao<V, T> dao) throws SQLException {
         this.dataDao = dao;
@@ -39,7 +51,7 @@ public abstract class BaseManager<T, V extends Identifiable<T>> {
 
     public void update(V data, Consumer<Boolean> finalTask) {
         createSuccessBasedTaskChain(
-                () -> this.dataDao.update(data),
+                () -> this.dataDao.createOrUpdate(data).getNumLinesChanged(),
                 () -> this.insert(data),
                 finalTask
         );
@@ -85,11 +97,11 @@ public abstract class BaseManager<T, V extends Identifiable<T>> {
         this.dataMap.put(data.getId(), data);
     }
 
-    void remove(V data) {
+    public void remove(V data) {
         this.dataMap.remove(data.getId());
     }
 
-    V get(T dataId) {
+    public V get(T dataId) {
         return this.dataMap.get(dataId);
     }
 
@@ -99,6 +111,10 @@ public abstract class BaseManager<T, V extends Identifiable<T>> {
 
     public Collection<V> getValues() {
         return dataMap.values();
+    }
+
+    public boolean contains(T id) {
+        return dataMap.containsKey(id);
     }
 
     Dao<V, T> getDao() {

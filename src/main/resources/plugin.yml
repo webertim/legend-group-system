@@ -12,5 +12,5 @@ commands:
     permission: legendgroupsystem.group
   player:
     description: Player commands
-    usage: /player <>
+    usage: /player < add | remove > < [ <player> <groupId> ] | [ <player> ] >
     permission: legendgroupsystem.player

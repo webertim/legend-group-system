@@ -24,6 +24,16 @@ public class PlayerInfo implements Identifiable<UUID> {
 
     public PlayerInfo() {}
 
+    public PlayerInfo(UUID playerUuid) {
+        this(playerUuid, null, null);
+    }
+
+    public PlayerInfo(UUID playerUuid, Group targetGroup, @Nullable Long expirationTimeMillis) {
+        this.uuid = playerUuid;
+        this.group = targetGroup;
+        this.expirationTimeMillis = expirationTimeMillis;
+    }
+
     @Override
     public UUID getId() {
         return uuid;

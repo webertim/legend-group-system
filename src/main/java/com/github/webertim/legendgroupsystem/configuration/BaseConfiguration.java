@@ -51,13 +51,13 @@ public class BaseConfiguration {
         );
     }
 
-    public @Nullable String getMessage(String languageKey, String messageKey) {
+    public String getMessage(String languageKey, String messageKey) {
         return this.configFile.getString(buildOptionPath(
             I18N_OPTIONS, LANGUAGE_OPTIONS, languageKey, messageKey
         ));
     }
 
-    public @Nullable String getMessage(String messageKey) {
+    public String getMessage(String messageKey) {
         return getMessage(
             this.configFile.getString(buildOptionPath(
                 I18N_OPTIONS, DEFAULT_LANGUAGE_OPTION

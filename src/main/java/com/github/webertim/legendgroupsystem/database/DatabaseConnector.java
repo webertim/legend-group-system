@@ -11,10 +11,11 @@ import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.UUID;
 
 public class DatabaseConnector {
     private final Dao<Group, String> groupDao;
-    private final Dao<PlayerInfo, Byte> playerInfoDao;
+    private final Dao<PlayerInfo, UUID> playerInfoDao;
     private final JdbcPooledConnectionSource connectionSource;
 
     public DatabaseConnector(String url, String user, String password, String databaseName) throws SQLException {
@@ -37,7 +38,7 @@ public class DatabaseConnector {
         return groupDao;
     }
 
-    public Dao<PlayerInfo, Byte> getPlayerInfoDao() {
+    public Dao<PlayerInfo, UUID> getPlayerInfoDao() {
         return playerInfoDao;
     }
 

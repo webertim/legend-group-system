@@ -14,7 +14,7 @@ public class ExpiringPlayer implements Comparable {
     private final UUID uuid;
     private final Long expirationTimeMillis;
 
-    public ExpiringPlayer(UUID uuid, long expirationTimeMillis) {
+    public ExpiringPlayer(UUID uuid, Long expirationTimeMillis) {
         this.uuid = uuid;
         this.expirationTimeMillis = expirationTimeMillis;
     }
