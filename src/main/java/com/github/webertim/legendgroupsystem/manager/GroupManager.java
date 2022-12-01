@@ -35,12 +35,18 @@ public class GroupManager extends BaseManager<String, Group> {
         super.update(data, finalTask);
     }
 
+    public Group getDefaultGroup() {
+        return this
+                .getValues()
+                .stream()
+                .filter(Group::isDefault)
+                .findFirst()
+                .orElse(Group.DEFAULT);
+    }
+
     public void updateDefaultGroup(Group group, Consumer<Boolean> lastTask) {
         this.createSuccessBasedTaskChain(
                 () -> {
-                    if (!(this.contains(group.getId()))) {
-                        return 0;
-                    }
                     UpdateBuilder<Group, String> updateBuilder = this.getDao().updateBuilder();
                     updateBuilder.updateColumnExpression(
                             Group.IS_DEFAULT_COLUMN,

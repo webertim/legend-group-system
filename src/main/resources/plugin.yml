@@ -14,3 +14,7 @@ commands:
     description: Player commands
     usage: /player < add | remove > < [ <player> <groupId> ] | [ <player> ] >
     permission: legendgroupsystem.player
+  groupinfo:
+    description: Player group info
+    usage: /groupinfo
+    permission: legendgroupsystem.info

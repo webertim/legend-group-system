@@ -4,6 +4,9 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import javax.annotation.Nullable;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.UUID;
 
 @DatabaseTable(tableName = PlayerInfo.TABLE_NAME)
@@ -45,5 +48,9 @@ public class PlayerInfo implements Identifiable<UUID> {
 
     public @Nullable Long getExpirationTimeMillis() {
         return expirationTimeMillis;
+    }
+
+    public @Nullable String getExpirationDateString() {
+        return SimpleDateFormat.getDateTimeInstance().format(new Date(expirationTimeMillis));
     }
 }

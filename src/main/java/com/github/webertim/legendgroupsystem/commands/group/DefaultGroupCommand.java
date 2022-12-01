@@ -17,12 +17,14 @@ public class DefaultGroupCommand extends BaseGroupCommand {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (args.length < 1) {
-            return false;
+        Group targetGroup = new Group("");
+
+        if (args.length >= 1) {
+            targetGroup = new Group(args[0]);
         }
 
         this.groupManager.updateDefaultGroup(
-                new Group(args[0]),
+                targetGroup,
                 this.getSuccessCallback("successDefaultGroup", "errorDefaultGroup", sender)
         );
         return true;
