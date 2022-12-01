@@ -22,6 +22,10 @@ public class Group {
 
     public Group() {}
 
+    public Group(String id) {
+        this(id, null, null);
+    }
+
     public Group(String id, String name, String prefix) {
         this.id = id;
         this.name = name;

@@ -51,8 +51,8 @@ public class UpdateGroupCommand extends BaseGroupCommand {
             updatedGroup,
             success -> {
                 String message = success ?
-                        ChatColor.GREEN + this.config.getMessage("successUpdateGroup") :
-                        ChatColor.RED + this.config.getMessage("errorUpdateGroup");
+                        this.config.getMessage("successUpdateGroup") :
+                        this.config.getMessage("errorUpdateGroup");
 
                 sender.sendMessage(message);
             }

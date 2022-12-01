@@ -54,6 +54,14 @@ public class DatabaseConnector {
         }
     }
 
+    public boolean tryDeleteGroup(Group group) {
+        try {
+            return this.groupDao.delete(group) == 1;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
     public List<Group> readGroups() throws SQLException {
         return this.groupDao.queryForAll();
     }

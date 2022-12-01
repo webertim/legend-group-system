@@ -8,7 +8,7 @@ description: A simple group management plugin created as part of the application
 commands:
   group:
     description: Group commands
-    usage: /group < create | modify > < [ <groupName> <prefix> ] | [ <groupName> <newPrefix> ] >
+    usage: /group < create | update | delete > < [ <groupId> <prefix> <groupName> ] | [ < name | prefix > <groupId> <value> ] | [ <groupId> ] >
     permission: legendgroupsystem.group
   player:
     description: Player commands

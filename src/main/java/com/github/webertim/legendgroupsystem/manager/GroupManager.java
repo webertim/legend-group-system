@@ -101,6 +101,14 @@ public class GroupManager {
         updateGroup(group, lastTask);
     }
 
+    public void deleteGroup(Group group, TaskChainTasks.LastTask<Boolean> lastTask) {
+        this.legendGroupSystem.createTaskChain()
+                .asyncFirst(() -> this.databaseConnector.tryDeleteGroup(group))
+                .sync(success -> this.removeGroupIfSuccess(success, group))
+                .syncLast(lastTask)
+                .execute();
+    }
+
     /**
      * Gets the IDs of all currently managed groups.
      *
@@ -128,6 +136,23 @@ public class GroupManager {
     }
 
     /**
+     * Simple helper function used in a task chain,
+     * which calls the {@link com.github.webertim.legendgroupsystem.manager.GroupManager#removeGroup(Group group)} method
+     * based on a provided boolean value. Also, the provided boolean value is returned for following tasks in the chain.
+     *
+     * @param success Boolean deciding whether the group should actually be removed.
+     * @param group The group to potentially remove.
+     * @return Boolean with the value of the success parameter.
+     */
+    private boolean removeGroupIfSuccess(Boolean success, Group group) {
+        if (success) {
+            removeGroup(group);
+        }
+
+        return success;
+    }
+
+    /**
      * This method is responsible for inserting new Group objects into the hashmap
      * Never use the put method of the group map directly.
      * A good example is {@link com.github.webertim.legendgroupsystem.manager.GroupManager#insertPlayerInfo(PlayerInfo playerInfo)}
@@ -138,6 +163,10 @@ public class GroupManager {
      */
     private void insertGroup(Group group) {
         this.groups.put(group.getId(), group);
+    }
+
+    private void removeGroup(Group group) {
+        this.groups.remove(group.getId());
     }
 
     /**

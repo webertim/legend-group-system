@@ -6,13 +6,17 @@ database:
 i18n:
   languages:
     de:
-      errorCreateGroup: "§cEs ist ein Fehler beim erstellen der Gruppe aufgetreten. Stelle sicher, dass die Gruppen-ID einzigartig ist."
+      errorCreateGroup: "§cEs ist ein Fehler beim Erstellen der Gruppe aufgetreten. Stelle sicher, dass die Gruppen-ID einzigartig ist."
       successCreateGroup: "§aGruppe erstellt."
-      errorUpdateGroup: "§cEs ist ein Fehler beim modifizieren der Gruppe aufgetreten. Stelle sicher, dass die Gruppen-ID existiert."
+      errorUpdateGroup: "§cEs ist ein Fehler beim Modifizieren der Gruppe aufgetreten. Stelle sicher, dass die Gruppen-ID existiert."
       successUpdateGroup: "§aGruppe angepasst."
+      errorDeleteGroup: "§cEs ist ein Fehler beim Löschen der Gruppe aufgetreten. Stelle sicher, dass die Gruppen-ID existiert."
+      successDeleteGroup: "§aGruppe gelöscht."
     en:
       errorCreateGroup: "§cThere was an error creating the group. Make sure the group ID is unique."
       successCreateGroup: "§aGroup created."
       errorUpdateGroup: "§cThere was an error updating the group. Make sure a group with the provided ID exists."
       successUpdateGroup: "§aGroup updated."
+      errorDeleteGroup: "§cThere was an error deleting the group. Make sure a group with the provided ID exists."
+      successDeleteGroup: "§aGroup deleted."
   defaultLanguage: de
