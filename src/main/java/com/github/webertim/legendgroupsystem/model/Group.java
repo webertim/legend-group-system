@@ -10,6 +10,9 @@ import java.util.List;
 public class Group {
 
     @DatabaseField(id = true)
+    private String id;
+
+    @DatabaseField
     private String name;
 
     @DatabaseField
@@ -19,8 +22,29 @@ public class Group {
 
     public Group() {}
 
-    public Group(String name, String prefix) {
+    public Group(String id, String name, String prefix) {
+        this.id = id;
         this.name = name;
+        this.prefix = prefix;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrefix(String prefix) {
         this.prefix = prefix;
     }
 }

@@ -5,3 +5,12 @@ api-version: 1.19
 prefix: LGS
 authors: [ webertim ]
 description: A simple group management plugin created as part of the application process.
+commands:
+  group:
+    description: Group commands
+    usage: /group < create | modify > < [ <groupName> <prefix> ] | [ <groupName> <newPrefix> ] >
+    permission: legendgroupsystem.group
+  player:
+    description: Player commands
+    usage: /player <>
+    permission: legendgroupsystem.player

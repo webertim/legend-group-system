@@ -6,9 +6,13 @@ database:
 i18n:
   languages:
     de:
-      hello: "Hallo welt!"
-      test: "testDE"
+      errorCreateGroup: "§cEs ist ein Fehler beim erstellen der Gruppe aufgetreten. Stelle sicher, dass die Gruppen-ID einzigartig ist."
+      successCreateGroup: "§aGruppe erstellt."
+      errorUpdateGroup: "§cEs ist ein Fehler beim modifizieren der Gruppe aufgetreten. Stelle sicher, dass die Gruppen-ID existiert."
+      successUpdateGroup: "§aGruppe angepasst."
     en:
-      hello: "Hello world!"
-      test: "testEN"
+      errorCreateGroup: "§cThere was an error creating the group. Make sure the group ID is unique."
+      successCreateGroup: "§aGroup created."
+      errorUpdateGroup: "§cThere was an error updating the group. Make sure a group with the provided ID exists."
+      successUpdateGroup: "§aGroup updated."
   defaultLanguage: de
