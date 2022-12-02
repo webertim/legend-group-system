@@ -93,7 +93,7 @@ public abstract class BaseManager<T, V extends Identifiable<T>> {
         }
     }
 
-    void insert(V data) {
+    public void insert(V data) {
         this.dataMap.put(data.getId(), data);
     }
 

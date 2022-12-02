@@ -37,7 +37,7 @@ public class PlayerManager extends BaseManager<UUID, PlayerInfo> {
     }
 
     @Override
-    void insert(PlayerInfo data) {
+    public void insert(PlayerInfo data) {
         super.insert(data);
 
         ExpiringPlayer expiringPlayer = new ExpiringPlayer(data.getId(), data.getExpirationTimeMillis());

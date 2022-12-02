@@ -22,6 +22,7 @@ i18n:
       durationTooLong: "§cDie Dauer ist zu lange."
       successRemovePlayerGroup: "§aSpieler-Gruppe entfernt."
       errorRemovePlayerGroup: "§cFehler beim Entfernen der Spieler-Gruppe."
+      playerJoin: "ist dem Spiel beigetreten"
     en:
       errorCreateGroup: "§cThere was an error creating the group. Make sure the group ID is unique."
       successCreateGroup: "§aGroup created."
@@ -39,5 +40,6 @@ i18n:
       durationTooLong: "§cDuration is too long."
       successRemovePlayerGroup: "§aPlayer group removed."
       errorRemovePlayerGroup: "§cError removing player group."
+      playerJoin: "Joined the game"
 
   defaultLanguage: de

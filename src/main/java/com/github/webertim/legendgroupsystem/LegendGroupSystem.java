@@ -11,6 +11,8 @@ import com.github.webertim.legendgroupsystem.commands.player.RemovePlayerGroupCo
 import com.github.webertim.legendgroupsystem.configuration.BaseConfiguration;
 import com.github.webertim.legendgroupsystem.database.DatabaseConnector;
 import com.github.webertim.legendgroupsystem.database.DatabaseOptions;
+import com.github.webertim.legendgroupsystem.listeners.AsyncPlayerChatListener;
+import com.github.webertim.legendgroupsystem.listeners.PlayerJoinListener;
 import com.github.webertim.legendgroupsystem.manager.GroupManager;
 import com.github.webertim.legendgroupsystem.manager.PlayerManager;
 import org.bukkit.plugin.PluginManager;
@@ -80,7 +82,8 @@ public final class LegendGroupSystem extends JavaPlugin {
 
     private void registerListeners() {
         PluginManager pluginManager = getServer().getPluginManager();
-
+        pluginManager.registerEvents(new AsyncPlayerChatListener(this.playerManager), this);
+        pluginManager.registerEvents(new PlayerJoinListener(this, this.playerManager, this.config), this);
     }
 
     public <T> TaskChain<T> createTaskChain() {
