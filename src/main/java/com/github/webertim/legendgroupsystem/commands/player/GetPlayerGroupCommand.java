@@ -14,6 +14,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+/**
+ * Command used to request the current rank as well as the remaining time (if it is not permanent)
+ */
 public class GetPlayerGroupCommand extends BasePlayerCommand {
     public GetPlayerGroupCommand(PlayerManager playerManager, GroupManager groupManager, BaseConfiguration config) {
         super(playerManager, groupManager, config);

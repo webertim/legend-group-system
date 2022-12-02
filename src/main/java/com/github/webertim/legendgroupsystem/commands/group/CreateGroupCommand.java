@@ -12,6 +12,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Command used to create a new group.
+ */
 public class CreateGroupCommand extends BaseGroupCommand {
 
     public CreateGroupCommand(GroupManager groupManager, BaseConfiguration config) {

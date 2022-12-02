@@ -14,6 +14,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Command used to remove a group from a player.
+ */
 public class RemovePlayerGroupCommand extends BasePlayerCommand {
     public RemovePlayerGroupCommand(PlayerManager playerManager, GroupManager groupManager, BaseConfiguration config) {
         super(playerManager, groupManager, config);

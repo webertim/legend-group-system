@@ -16,6 +16,9 @@ import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Command used to add a player to a group (permanently or for a limited time)
+ */
 public class AddPlayerGroupCommand extends BasePlayerCommand {
     public AddPlayerGroupCommand(PlayerManager playerManager, GroupManager groupManager, BaseConfiguration config) {
         super(playerManager, groupManager, config);

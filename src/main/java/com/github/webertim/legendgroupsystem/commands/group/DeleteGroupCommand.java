@@ -10,6 +10,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+/**
+ * Command used to delete a group. (If no players are still in this group)
+ */
 public class DeleteGroupCommand extends BaseGroupCommand {
 
     public DeleteGroupCommand(GroupManager groupManager, BaseConfiguration config) {

@@ -6,13 +6,8 @@ import com.github.webertim.legendgroupsystem.manager.enums.SignStatusEnum;
 import com.github.webertim.legendgroupsystem.model.Group;
 import com.github.webertim.legendgroupsystem.model.PlayerInfo;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
-
-import java.util.Arrays;
 
 public class PlayerUpdater {
 
@@ -25,7 +20,6 @@ public class PlayerUpdater {
     }
 
     public void updatePlayer(Player player) {
-        long start = System.currentTimeMillis();
         String prefixedPlayerName = this.playerManager.buildPlayerName(player);
         Group playerGroup = this.playerManager.getGroupInfo(player.getUniqueId());
         PlayerInfo playerInfo = playerManager.get(player.getUniqueId());
@@ -45,7 +39,5 @@ public class PlayerUpdater {
 
         this.signManager.updatePlayerAllSigns(player, SignStatusEnum.UPDATE);
         player.playerListName(Component.text(prefixedPlayerName));
-
-        System.out.println(System.currentTimeMillis() - start);
     }
 }

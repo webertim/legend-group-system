@@ -10,6 +10,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+/**
+ * Command used to set a new default group.
+ */
 public class DefaultGroupCommand extends BaseGroupCommand {
     public DefaultGroupCommand(GroupManager groupManager, BaseConfiguration config) {
         super(groupManager, config);

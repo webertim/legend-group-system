@@ -12,6 +12,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Command used to update group name or prefix.
+ */
 public class UpdateGroupCommand extends BaseGroupCommand {
 
     private static final String UPDATE_NAME_KEYWORD = "name";

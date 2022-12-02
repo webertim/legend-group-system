@@ -2,12 +2,10 @@ package com.github.webertim.legendgroupsystem.util;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class ScoreboardBuilder {

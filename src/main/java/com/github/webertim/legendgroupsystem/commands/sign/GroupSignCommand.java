@@ -12,6 +12,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+/**
+ * Command used to create a sign displaying the group of the viewing player.
+ */
 public class GroupSignCommand extends BaseSignCommand {
     public GroupSignCommand(SignManager signManager, BaseConfiguration config) {
         super(signManager, config);
