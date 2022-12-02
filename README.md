@@ -23,4 +23,4 @@ which will start a 1.19.2 Spigot Server and a Postgres Database. Afterwards the 
 mvn install
 ```
 
-This will build the .jar file and copy it to the server/plugins folder.
+This will build the .jar file and copy it to the server/plugins folder. To load the plugin simply run /reload confirm ingame or restart the server.
