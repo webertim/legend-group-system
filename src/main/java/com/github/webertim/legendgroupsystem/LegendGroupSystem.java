@@ -18,12 +18,15 @@ import com.github.webertim.legendgroupsystem.manager.GroupManager;
 import com.github.webertim.legendgroupsystem.manager.PlayerManager;
 import com.github.webertim.legendgroupsystem.manager.SignManager;
 import com.github.webertim.legendgroupsystem.manager.enums.SignStatusEnum;
+import com.github.webertim.legendgroupsystem.util.PlayerUpdater;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.SQLException;
+import java.util.UUID;
 
 public final class LegendGroupSystem extends JavaPlugin {
     private DatabaseConnector databaseConnector;
@@ -32,6 +35,7 @@ public final class LegendGroupSystem extends JavaPlugin {
     private GroupManager groupManager;
     private PlayerManager playerManager;
     private SignManager signManager;
+    private PlayerUpdater playerUpdater;
 
     @Override
     public void onEnable() {
@@ -53,6 +57,8 @@ public final class LegendGroupSystem extends JavaPlugin {
             throw new RuntimeException(e);
         }
 
+        this.playerUpdater = new PlayerUpdater(this.playerManager, this.groupManager, this.signManager);
+
         this.registerManagerCallbacks();
         this.registerListeners();
         this.registerCommands();
@@ -72,14 +78,16 @@ public final class LegendGroupSystem extends JavaPlugin {
     private void registerManagerCallbacks() {
         this.groupManager.registerOnChangeListener(
                 (group, operation) -> {
-                    this.signManager.updateAllPlayersAllSigns(SignStatusEnum.UPDATE);
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        this.playerUpdater.updatePlayer(player);
+                    }
                 }
         );
 
         this.playerManager.registerOnChangeListener(
                 (playerInfo, operation) -> {
                     Player targetPlayer = Bukkit.getPlayer(playerInfo.getId());
-                    this.signManager.updatePlayerAllSigns(targetPlayer, SignStatusEnum.UPDATE);
+                    this.playerUpdater.updatePlayer(targetPlayer);
                 }
         );
     }
@@ -87,7 +95,7 @@ public final class LegendGroupSystem extends JavaPlugin {
     private void registerListeners() {
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(new AsyncPlayerChatListener(this.playerManager), this);
-        pluginManager.registerEvents(new PlayerJoinListener(this, this.playerManager, this.signManager, this.config), this);
+        pluginManager.registerEvents(new PlayerJoinListener(this.playerManager, this.playerUpdater), this);
     }
 
     private void registerCommands() {
