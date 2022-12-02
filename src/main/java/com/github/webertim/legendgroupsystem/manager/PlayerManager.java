@@ -6,9 +6,7 @@ import com.github.webertim.legendgroupsystem.model.ExpiringPlayer;
 import com.github.webertim.legendgroupsystem.model.Group;
 import com.github.webertim.legendgroupsystem.model.PlayerInfo;
 import com.j256.ormlite.dao.Dao;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.ScoreboardManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLException;
@@ -18,7 +16,6 @@ import java.util.UUID;
 public class PlayerManager extends BaseManager<UUID, PlayerInfo> {
 
     private PriorityQueue<ExpiringPlayer> expiringPlayers;
-    private CheckExpiredTask checkExpiredTask;
     private final GroupManager groupManager;
 
     public PlayerManager(LegendGroupSystem legendGroupSystem, Dao<PlayerInfo, UUID> dao, GroupManager groupManager) throws SQLException {
@@ -30,8 +27,8 @@ public class PlayerManager extends BaseManager<UUID, PlayerInfo> {
     public void initialize() throws SQLException {
         this.expiringPlayers = new PriorityQueue<>();
 
-        this.checkExpiredTask = new CheckExpiredTask(expiringPlayers, this);
-        this.checkExpiredTask.runTaskTimer(this.legendGroupSystem, 20, 20);
+        CheckExpiredTask checkExpiredTask = new CheckExpiredTask(expiringPlayers, this);
+        checkExpiredTask.runTaskTimer(this.legendGroupSystem, 20, 20);
 
         super.initialize();
     }
@@ -54,7 +51,8 @@ public class PlayerManager extends BaseManager<UUID, PlayerInfo> {
     public void remove(PlayerInfo data) {
         super.remove(data);
 
-        this.expiringPlayers.remove(data);
+        ExpiringPlayer expiringPlayer = ExpiringPlayer.fromPlayerInfo(data);
+        this.expiringPlayers.remove(expiringPlayer);
     }
 
     public void removePerformant(PlayerInfo data) {
@@ -93,7 +91,7 @@ public class PlayerManager extends BaseManager<UUID, PlayerInfo> {
     }
 
     private void removeAndAddExpiringPlayer(PlayerInfo data) {
-        ExpiringPlayer expiringPlayer = new ExpiringPlayer(data.getId(), data.getExpirationTimeMillis());
+        ExpiringPlayer expiringPlayer = ExpiringPlayer.fromPlayerInfo(data);
         this.expiringPlayers.remove(expiringPlayer);
 
         if (data.getExpirationTimeMillis() != null) {

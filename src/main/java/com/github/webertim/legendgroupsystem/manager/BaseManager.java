@@ -26,7 +26,7 @@ import java.util.function.Consumer;
  * @param <V>
  */
 public abstract class BaseManager<T, V extends Identifiable<T>> {
-    private final HashMap<T, V> dataMap = new HashMap();
+    private final HashMap<T, V> dataMap = new HashMap<>();
     private final Dao<V, T> dataDao;
     private final List<BiConsumer<V, Operation>> changeListeners = new ArrayList<>();
     protected final LegendGroupSystem legendGroupSystem;
@@ -73,7 +73,7 @@ public abstract class BaseManager<T, V extends Identifiable<T>> {
         this.legendGroupSystem.createTaskChain()
                 .asyncFirst(() -> tryOperation(operationCallback))
                 .sync(success -> ifSuccess(success, successfulCallback))
-                .syncLast(success -> finalCallback.accept(success))
+                .syncLast(finalCallback::accept)
                 .execute();
     }
 

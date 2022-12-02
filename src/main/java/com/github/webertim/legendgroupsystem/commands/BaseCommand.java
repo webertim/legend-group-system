@@ -1,7 +1,6 @@
 package com.github.webertim.legendgroupsystem.commands;
 
 import com.github.webertim.legendgroupsystem.configuration.BaseConfiguration;
-import com.github.webertim.legendgroupsystem.manager.GroupManager;
 import org.bukkit.command.CommandSender;
 
 import java.util.function.Consumer;

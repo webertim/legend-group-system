@@ -1,9 +1,6 @@
 package com.github.webertim.legendgroupsystem.commands;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -62,7 +59,7 @@ public class KeywordCommand implements CommandExecutor, TabCompleter {
             return false;
         }
 
-        return subCommand.onCommand(commandSender, command, label, Arrays.stream(args).toList().subList(1, args.length).toArray(String[]::new));
+        return subCommand.onCommand(commandSender, command, label, subArray(args));
     }
 
     @Override
@@ -73,7 +70,7 @@ public class KeywordCommand implements CommandExecutor, TabCompleter {
 
         if (this.executor != null) {
             if (this.completer != null) {
-                return this.completer.onTabComplete(commandSender, command, label, Arrays.stream(args).toList().subList(1, args.length).toArray(String[]::new));
+                return this.completer.onTabComplete(commandSender, command, label, subArray(args));
             } else {
                 return null;
             }
@@ -86,19 +83,33 @@ public class KeywordCommand implements CommandExecutor, TabCompleter {
         } else {
             KeywordCommand subCommand = this.subCommands.get(arg);
             if (subCommand == null) {
-                return this.subCommands.keySet().stream().filter(s -> s.startsWith(arg)).toList();
+                return this.subCommands
+                        .keySet()
+                        .stream()
+                        .filter(s -> s.startsWith(arg))
+                        .toList();
             }
 
-            return subCommand.onTabComplete(commandSender, command, label, Arrays.stream(args).toList().subList(1, args.length).toArray(String[]::new));
+            return subCommand.onTabComplete(commandSender, command, label, subArray(args));
         }
     }
 
     public void register(JavaPlugin plugin) {
-        plugin.getCommand(this.keyword).setExecutor(this);
-        plugin.getCommand(this.keyword).setTabCompleter(this);
+        PluginCommand command = plugin.getCommand(this.keyword);
+
+        if (command == null) {
+            return;
+        }
+
+        command.setExecutor(this);
+        command.setTabCompleter(this);
     }
 
     public String getKeyword() {
         return keyword;
+    }
+
+    private String[] subArray(@NotNull String @NotNull [] args) {
+        return Arrays.stream(args).toList().subList(1, args.length).toArray(String[]::new);
     }
 }

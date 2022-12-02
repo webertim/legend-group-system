@@ -57,7 +57,7 @@ public final class LegendGroupSystem extends JavaPlugin {
             throw new RuntimeException(e);
         }
 
-        this.playerUpdater = new PlayerUpdater(this.playerManager, this.groupManager, this.signManager);
+        this.playerUpdater = new PlayerUpdater(this.playerManager, this.signManager);
 
         this.registerManagerCallbacks();
         this.registerListeners();

@@ -6,12 +6,9 @@ import com.github.webertim.legendgroupsystem.model.PlayerInfo;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
-import com.j256.ormlite.stmt.UpdateBuilder;
-import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.UUID;
 
 public class DatabaseConnector {
@@ -35,7 +32,7 @@ public class DatabaseConnector {
     }
 
     public DatabaseConnector(DatabaseOptions databaseOptions) throws SQLException {
-        this(databaseOptions.getUrl(), databaseOptions.getUsername(), databaseOptions.getPassword(), databaseOptions.getName());
+        this(databaseOptions.url(), databaseOptions.username(), databaseOptions.password(), databaseOptions.name());
     }
 
     public Dao<Group, String> getGroupDao() {

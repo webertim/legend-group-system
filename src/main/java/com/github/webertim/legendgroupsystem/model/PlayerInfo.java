@@ -5,7 +5,6 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import javax.annotation.Nullable;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.UUID;
 
@@ -22,7 +21,7 @@ public class PlayerInfo implements Identifiable<UUID> {
     @DatabaseField(foreign = true, columnName = GROUP_COLUMN, columnDefinition = "varchar(255) references groups(id)")
     private Group group;
 
-    @DatabaseField(canBeNull = true, columnName = EXPIRATION_TIME_MILLIS_COLUMN)
+    @DatabaseField(columnName = EXPIRATION_TIME_MILLIS_COLUMN)
     private Long expirationTimeMillis;
 
     public PlayerInfo() {}

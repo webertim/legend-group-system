@@ -3,8 +3,6 @@ package com.github.webertim.legendgroupsystem.commands.group;
 import com.github.webertim.legendgroupsystem.configuration.BaseConfiguration;
 import com.github.webertim.legendgroupsystem.manager.GroupManager;
 import com.github.webertim.legendgroupsystem.model.Group;
-import com.github.webertim.legendgroupsystem.util.ChatUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -62,7 +60,7 @@ public class UpdateGroupCommand extends BaseGroupCommand {
         } else if (args.length == 1) {
             return groupManager.getIds().stream().toList();
         } else if (args.length == 2) {
-            Arrays.asList("<value>");
+            return List.of("<value>");
         }
         return null;
     }

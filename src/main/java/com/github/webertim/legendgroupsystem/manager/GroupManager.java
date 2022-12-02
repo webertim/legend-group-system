@@ -59,20 +59,20 @@ public class GroupManager extends BaseManager<String, Group> {
 
         Optional<Group> currentDefault = this.findDefault();
 
-        if (!(currentDefault.isEmpty())) {
-            this.edit(
-                    currentDefault.get().getId(),
-                    currentDefault.get().copyWithDefault(false)
-            );
-        }
+        currentDefault.ifPresent(value -> this.edit(
+                value.getId(),
+                value.copyWithDefault(false)
+        ));
 
         Group targetGroup = this.get(group.getId());
-        if (targetGroup != null) {
-            this.edit(
-                    targetGroup.getId(),
-                    targetGroup.copyWithDefault(true)
-            );
+        if (targetGroup == null) {
+            return;
         }
+
+        this.edit(
+                targetGroup.getId(),
+                targetGroup.copyWithDefault(true)
+        );
     }
 
     public Group getDefaultGroup() {

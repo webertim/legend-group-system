@@ -1,22 +1,18 @@
 package com.github.webertim.legendgroupsystem.util;
 
-import com.github.webertim.legendgroupsystem.manager.GroupManager;
 import com.github.webertim.legendgroupsystem.manager.PlayerManager;
 import com.github.webertim.legendgroupsystem.manager.SignManager;
 import com.github.webertim.legendgroupsystem.manager.enums.SignStatusEnum;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class PlayerUpdater {
 
     private final PlayerManager playerManager;
-    private final GroupManager groupManager;
     private final SignManager signManager;
 
-    public PlayerUpdater(PlayerManager playerManager, GroupManager groupManager, SignManager signManager) {
+    public PlayerUpdater(PlayerManager playerManager, SignManager signManager) {
         this.playerManager = playerManager;
-        this.groupManager = groupManager;
         this.signManager = signManager;
     }
 

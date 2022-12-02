@@ -4,8 +4,6 @@ import com.github.webertim.legendgroupsystem.database.DatabaseOptions;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
-import javax.annotation.Nullable;
-
 public class BaseConfiguration {
     private static final String DATABASE_OPTIONS = "database";
     private static final String USER_OPTION = "user";
@@ -64,11 +62,6 @@ public class BaseConfiguration {
             )),
             messageKey
         );
-    }
-
-    public void reload() {
-        this.plugin.saveConfig();
-        this.plugin.reloadConfig();
     }
 
     private String buildOptionPath(String... options) {

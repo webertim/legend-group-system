@@ -4,7 +4,6 @@ import com.github.webertim.legendgroupsystem.manager.PlayerManager;
 import com.github.webertim.legendgroupsystem.model.ExpiringPlayer;
 import com.github.webertim.legendgroupsystem.model.PlayerInfo;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.PriorityQueue;
 
@@ -12,7 +11,7 @@ public class CheckExpiredTask extends BukkitRunnable {
     private final PriorityQueue<ExpiringPlayer> expiringPlayers;
     private final PlayerManager playerManager;
 
-    public CheckExpiredTask(PriorityQueue expiringPlayers, PlayerManager playerManager) {
+    public CheckExpiredTask(PriorityQueue<ExpiringPlayer> expiringPlayers, PlayerManager playerManager) {
         this.expiringPlayers = expiringPlayers;
         this.playerManager = playerManager;
     }
@@ -21,9 +20,9 @@ public class CheckExpiredTask extends BukkitRunnable {
     public void run() {
         ExpiringPlayer nextExpiring = expiringPlayers.peek();
 
-        while (nextExpiring != null && nextExpiring.getExpirationTimeMillis() < System.currentTimeMillis()) {
+        while (nextExpiring != null && nextExpiring.expirationTimeMillis() < System.currentTimeMillis()) {
             expiringPlayers.poll();
-            PlayerInfo targetPlayer = new PlayerInfo(nextExpiring.getUuid());
+            PlayerInfo targetPlayer = new PlayerInfo(nextExpiring.uuid());
 
             /* This background task does not use the delete method of the BaseManager class but rather two more performant
              * methods. The first reason is the order of the operations. In this case it is more important, that the game

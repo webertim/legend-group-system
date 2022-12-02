@@ -5,8 +5,6 @@ import com.j256.ormlite.table.DatabaseTable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
-import java.io.Serializable;
-
 @DatabaseTable(tableName = PlayerGroupSign.TABLE_NAME)
 public class PlayerGroupSign implements Identifiable<String> {
     public static final String TABLE_NAME = "signs";

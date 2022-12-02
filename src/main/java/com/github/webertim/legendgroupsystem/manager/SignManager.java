@@ -23,19 +23,6 @@ public class SignManager extends BaseManager<String, PlayerGroupSign> {
         this.playerManager = playerManager;
     }
 
-    public void updateAllPlayersAllSigns(SignStatusEnum signStatus) {
-        Bukkit.getScheduler().runTaskAsynchronously(
-                legendGroupSystem,
-                () -> {
-                    for (Player player : Bukkit.getOnlinePlayers()) {
-                        for (PlayerGroupSign sign : this.getValues()) {
-                            sendSignChange(player, sign, signStatus);
-                        }
-                    }
-                }
-        );
-    }
-
     public void updateAllPlayersSingleSign(PlayerGroupSign sign, SignStatusEnum signStatus) {
         Bukkit.getScheduler().runTaskAsynchronously(
                 legendGroupSystem,
