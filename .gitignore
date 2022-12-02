@@ -111,3 +111,9 @@ buildNumber.properties
 
 # Common working directory
 run/
+
+# Docker MC Server
+server/
+
+# Postgres Docker container
+data/

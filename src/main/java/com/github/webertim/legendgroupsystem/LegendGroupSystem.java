@@ -3,13 +3,6 @@ package com.github.webertim.legendgroupsystem;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.ListenerPriority;
-import com.comphenix.protocol.events.NetworkMarker;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketEvent;
 import com.github.webertim.legendgroupsystem.commands.KeywordCommand;
 import com.github.webertim.legendgroupsystem.commands.group.*;
 import com.github.webertim.legendgroupsystem.commands.player.AddPlayerGroupCommand;
@@ -20,15 +13,10 @@ import com.github.webertim.legendgroupsystem.database.DatabaseConnector;
 import com.github.webertim.legendgroupsystem.database.DatabaseOptions;
 import com.github.webertim.legendgroupsystem.manager.GroupManager;
 import com.github.webertim.legendgroupsystem.manager.PlayerManager;
-import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.SQLException;
-import java.util.List;
 
 public final class LegendGroupSystem extends JavaPlugin {
     private DatabaseConnector databaseConnector;
@@ -36,11 +24,9 @@ public final class LegendGroupSystem extends JavaPlugin {
     private BaseConfiguration config;
     private GroupManager groupManager;
     private PlayerManager playerManager;
-    private ProtocolManager protocolManager;
 
     @Override
     public void onEnable() {
-        this.protocolManager = ProtocolLibrary.getProtocolManager();
         this.taskChainFactory = BukkitTaskChainFactory.create(this);
         this.config = new BaseConfiguration(this);
 
@@ -59,7 +45,6 @@ public final class LegendGroupSystem extends JavaPlugin {
         }
 
         this.registerListeners();
-        this.registerPacketListeners();
         this.registerCommands();
     }
 
@@ -98,19 +83,11 @@ public final class LegendGroupSystem extends JavaPlugin {
 
     }
 
-    private void registerPacketListeners() {
-
-    }
-
     public <T> TaskChain<T> createTaskChain() {
-        return taskChainFactory.<T>newChain();
+        return taskChainFactory.newChain();
     }
 
     public <T> TaskChain<T> createTaskChain(String name) {
-        return taskChainFactory.<T>newSharedChain(name);
-    }
-
-    public ProtocolManager getProtocolManager() {
-        return protocolManager;
+        return taskChainFactory.newSharedChain(name);
     }
 }
