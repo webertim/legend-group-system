@@ -74,4 +74,13 @@ public class Group implements Identifiable<String> {
     public void setDefault(boolean isDefault) {
         this.isDefault = isDefault;
     }
+
+    public Group copyWithDefault(boolean isDefault) {
+        return new Group(
+                this.id,
+                this.name,
+                this.prefix,
+                isDefault
+        );
+    }
 }

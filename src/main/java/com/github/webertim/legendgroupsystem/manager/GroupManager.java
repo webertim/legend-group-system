@@ -6,6 +6,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.UpdateBuilder;
 
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class GroupManager extends BaseManager<String, Group> {
@@ -32,16 +33,9 @@ public class GroupManager extends BaseManager<String, Group> {
             data.setName(targetGroup.getName());
         }
 
-        super.update(data, finalTask);
-    }
+        data.setDefault(targetGroup.isDefault());
 
-    public Group getDefaultGroup() {
-        return this
-                .getValues()
-                .stream()
-                .filter(Group::isDefault)
-                .findFirst()
-                .orElse(Group.DEFAULT);
+        super.update(data, finalTask);
     }
 
     public void updateDefaultGroup(Group group, Consumer<Boolean> lastTask) {
@@ -60,9 +54,38 @@ public class GroupManager extends BaseManager<String, Group> {
     }
 
     private void setDefaultGroup(Group group) {
-        this.getValues().forEach(
-                (Group prevGroup) ->
-                    prevGroup.setDefault(prevGroup.getId().equals(group.getId()))
-        );
+        // This may seem overcomplicated, but mapping over this.getValues() would become a problem
+        // because the onChange would not fire in this case.
+
+        Optional<Group> currentDefault = this.findDefault();
+
+        if (!(currentDefault.isEmpty())) {
+            this.update(
+                    currentDefault.get().getId(),
+                    currentDefault.get().copyWithDefault(false)
+            );
+        }
+
+        Group targetGroup = this.get(group.getId());
+        if (targetGroup != null) {
+            this.update(
+                    targetGroup.getId(),
+                    targetGroup.copyWithDefault(true)
+            );
+        }
+    }
+
+    public Group getDefaultGroup() {
+        return this
+                .findDefault()
+                .orElse(Group.DEFAULT);
+    }
+
+    private Optional<Group> findDefault() {
+        return this
+                .getValues()
+                .stream()
+                .filter(Group::isDefault)
+                .findFirst();
     }
 }

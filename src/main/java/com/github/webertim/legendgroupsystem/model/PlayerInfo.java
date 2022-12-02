@@ -51,6 +51,13 @@ public class PlayerInfo implements Identifiable<UUID> {
     }
 
     public @Nullable String getExpirationDateString() {
-        return SimpleDateFormat.getDateTimeInstance().format(new Date(expirationTimeMillis));
+        if (expirationTimeMillis == null) {
+            return "";
+        }
+
+        Date expirationDate = new Date(expirationTimeMillis);
+        return SimpleDateFormat
+                .getDateTimeInstance()
+                .format(expirationDate);
     }
 }

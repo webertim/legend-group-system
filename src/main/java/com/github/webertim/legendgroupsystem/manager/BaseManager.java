@@ -1,14 +1,14 @@
 package com.github.webertim.legendgroupsystem.manager;
 
 import com.github.webertim.legendgroupsystem.LegendGroupSystem;
+import com.github.webertim.legendgroupsystem.manager.enums.Operation;
 import com.github.webertim.legendgroupsystem.model.Identifiable;
 import com.j256.ormlite.dao.Dao;
 
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.Callable;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
@@ -28,6 +28,7 @@ import java.util.function.Consumer;
 public abstract class BaseManager<T, V extends Identifiable<T>> {
     private final HashMap<T, V> dataMap = new HashMap();
     private final Dao<V, T> dataDao;
+    private final List<BiConsumer<V, Operation>> changeListeners = new ArrayList<>();
     protected final LegendGroupSystem legendGroupSystem;
 
     public BaseManager(LegendGroupSystem legendGroupSystem, Dao<V, T> dao) throws SQLException {
@@ -52,7 +53,7 @@ public abstract class BaseManager<T, V extends Identifiable<T>> {
     public void update(V data, Consumer<Boolean> finalTask) {
         createSuccessBasedTaskChain(
                 () -> this.dataDao.createOrUpdate(data).getNumLinesChanged(),
-                () -> this.insert(data),
+                () -> this.update(data.getId(), data),
                 finalTask
         );
     }
@@ -95,12 +96,29 @@ public abstract class BaseManager<T, V extends Identifiable<T>> {
 
     public void insert(V data) {
         this.dataMap.put(data.getId(), data);
+        onChange(data, Operation.INSERT);
+    }
+
+    public void update(T id, V data) {
+        assert id.equals(data.getId());
+        assert this.dataMap.containsKey(data.getId());
+
+        this.dataMap.put(id, data);
+        onChange(data, Operation.UPDATE);
     }
 
     public void remove(V data) {
         this.dataMap.remove(data.getId());
+        onChange(data, Operation.REMOVE);
     }
 
+    /**
+     * Get resource with specified id.
+     * Note: Resource should never be changed directly because change listeners will not be informed.
+     *
+     * @param dataId The id of the requested resource.
+     * @return The managed resource with the provided id or null if no such resource exists.
+     */
     public V get(T dataId) {
         return this.dataMap.get(dataId);
     }
@@ -109,6 +127,12 @@ public abstract class BaseManager<T, V extends Identifiable<T>> {
         return dataMap.keySet();
     }
 
+    /**
+     * Get all resources managed by this manager.
+     * Note: Resources should never be changed directly because change listeners will not be informed.
+     *
+     * @return Collection of currently managed resources.
+     */
     public Collection<V> getValues() {
         return dataMap.values();
     }
@@ -120,4 +144,15 @@ public abstract class BaseManager<T, V extends Identifiable<T>> {
     Dao<V, T> getDao() {
         return this.dataDao;
     }
+
+    private void onChange(V data, Operation operation) {
+        changeListeners.forEach(
+                listener -> listener.accept(data, operation)
+        );
+    }
+
+    public void registerOnChangeListener(BiConsumer<V, Operation> listener) {
+        this.changeListeners.add(listener);
+    }
 }
+

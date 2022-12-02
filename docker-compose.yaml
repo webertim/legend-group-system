@@ -6,6 +6,8 @@ services:
       - POSTGRES_PASSWORD=postgrespw
     volumes:
       - ./data:/var/lib/postgresql
+    ports:
+      - 5432:5432
   server:
     image: marctv/minecraft-papermc-server:latest
     ports:

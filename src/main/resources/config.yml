@@ -23,6 +23,8 @@ i18n:
       successRemovePlayerGroup: "§aSpieler-Gruppe entfernt."
       errorRemovePlayerGroup: "§cFehler beim Entfernen der Spieler-Gruppe."
       playerJoin: "ist dem Spiel beigetreten"
+      successSignCreate: "§aRang-Schild erstellt."
+      errorSignCreate: "§cRang-Schild konnte nicht erstellt werden. Eventuell existiert an ihrer Position kein Schild."
     en:
       errorCreateGroup: "§cThere was an error creating the group. Make sure the group ID is unique."
       successCreateGroup: "§aGroup created."
@@ -41,5 +43,7 @@ i18n:
       successRemovePlayerGroup: "§aPlayer group removed."
       errorRemovePlayerGroup: "§cError removing player group."
       playerJoin: "Joined the game"
+      successSignCreate: "§aRank sign created."
+      errorSignCreate: "§cRank sign could not be created. Make sure you are standing on a sign."
 
   defaultLanguage: de

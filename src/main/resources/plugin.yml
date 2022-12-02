@@ -18,3 +18,7 @@ commands:
     description: Player group info
     usage: /groupinfo
     permission: legendgroupsystem.info
+  groupsign:
+    description: Create a group rank sign
+    usage: /groupsign <signName>
+    permission: legendgroupsystem.sign

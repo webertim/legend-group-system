@@ -1,6 +1,7 @@
 package com.github.webertim.legendgroupsystem.database;
 
 import com.github.webertim.legendgroupsystem.model.Group;
+import com.github.webertim.legendgroupsystem.model.PlayerGroupSign;
 import com.github.webertim.legendgroupsystem.model.PlayerInfo;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
@@ -16,6 +17,7 @@ import java.util.UUID;
 public class DatabaseConnector {
     private final Dao<Group, String> groupDao;
     private final Dao<PlayerInfo, UUID> playerInfoDao;
+    private final Dao<PlayerGroupSign, String> signDao;
     private final JdbcPooledConnectionSource connectionSource;
 
     public DatabaseConnector(String url, String user, String password, String databaseName) throws SQLException {
@@ -25,9 +27,11 @@ public class DatabaseConnector {
 
         groupDao = DaoManager.createDao(connectionSource, Group.class);
         playerInfoDao = DaoManager.createDao(connectionSource, PlayerInfo.class);
+        signDao = DaoManager.createDao(connectionSource, PlayerGroupSign.class);
 
         TableUtils.createTableIfNotExists(this.connectionSource, Group.class);
         TableUtils.createTableIfNotExists(this.connectionSource, PlayerInfo.class);
+        TableUtils.createTableIfNotExists(this.connectionSource, PlayerGroupSign.class);
     }
 
     public DatabaseConnector(DatabaseOptions databaseOptions) throws SQLException {
@@ -40,6 +44,10 @@ public class DatabaseConnector {
 
     public Dao<PlayerInfo, UUID> getPlayerInfoDao() {
         return playerInfoDao;
+    }
+
+    public Dao<PlayerGroupSign, String> getSignDao() {
+        return signDao;
     }
 
     public void close() throws Exception {
