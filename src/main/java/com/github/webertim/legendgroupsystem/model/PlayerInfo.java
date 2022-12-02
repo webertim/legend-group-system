@@ -19,7 +19,7 @@ public class PlayerInfo implements Identifiable<UUID> {
     @DatabaseField(id = true, columnName = ID_COLUMN)
     private UUID uuid;
 
-    @DatabaseField(foreign = true, columnName = GROUP_COLUMN)
+    @DatabaseField(foreign = true, columnName = GROUP_COLUMN, columnDefinition = "varchar(255) references groups(id)")
     private Group group;
 
     @DatabaseField(canBeNull = true, columnName = EXPIRATION_TIME_MILLIS_COLUMN)

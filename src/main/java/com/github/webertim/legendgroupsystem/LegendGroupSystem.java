@@ -4,7 +4,10 @@ import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
 import com.github.webertim.legendgroupsystem.commands.KeywordCommand;
-import com.github.webertim.legendgroupsystem.commands.group.*;
+import com.github.webertim.legendgroupsystem.commands.group.CreateGroupCommand;
+import com.github.webertim.legendgroupsystem.commands.group.DefaultGroupCommand;
+import com.github.webertim.legendgroupsystem.commands.group.DeleteGroupCommand;
+import com.github.webertim.legendgroupsystem.commands.group.UpdateGroupCommand;
 import com.github.webertim.legendgroupsystem.commands.player.AddPlayerGroupCommand;
 import com.github.webertim.legendgroupsystem.commands.player.GetPlayerGroupCommand;
 import com.github.webertim.legendgroupsystem.commands.player.RemovePlayerGroupCommand;
@@ -17,16 +20,13 @@ import com.github.webertim.legendgroupsystem.listeners.PlayerJoinListener;
 import com.github.webertim.legendgroupsystem.manager.GroupManager;
 import com.github.webertim.legendgroupsystem.manager.PlayerManager;
 import com.github.webertim.legendgroupsystem.manager.SignManager;
-import com.github.webertim.legendgroupsystem.manager.enums.SignStatusEnum;
 import com.github.webertim.legendgroupsystem.util.PlayerUpdater;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.SQLException;
-import java.util.UUID;
 
 public final class LegendGroupSystem extends JavaPlugin {
     private DatabaseConnector databaseConnector;
@@ -62,17 +62,6 @@ public final class LegendGroupSystem extends JavaPlugin {
         this.registerManagerCallbacks();
         this.registerListeners();
         this.registerCommands();
-    }
-
-    @Override
-    public void onDisable() {
-        if (databaseConnector != null) {
-            try {
-                databaseConnector.close();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
     }
 
     private void registerManagerCallbacks() {
@@ -124,7 +113,14 @@ public final class LegendGroupSystem extends JavaPlugin {
         return taskChainFactory.newChain();
     }
 
-    public <T> TaskChain<T> createTaskChain(String name) {
-        return taskChainFactory.newSharedChain(name);
+    @Override
+    public void onDisable() {
+        if (databaseConnector != null) {
+            try {
+                databaseConnector.close();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }

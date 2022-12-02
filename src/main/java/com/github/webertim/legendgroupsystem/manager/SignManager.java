@@ -108,6 +108,13 @@ public class SignManager extends BaseManager<String, PlayerGroupSign> {
     }
 
     @Override
+    public void edit(String id, PlayerGroupSign data) {
+        super.edit(id, data);
+
+        updateAllPlayersSingleSign(data, SignStatusEnum.UPDATE);
+    }
+
+    @Override
     public void remove(PlayerGroupSign data) {
         super.remove(data);
 

@@ -20,6 +20,7 @@ public class CheckExpiredTask extends BukkitRunnable {
     @Override
     public void run() {
         ExpiringPlayer nextExpiring = expiringPlayers.peek();
+
         while (nextExpiring != null && nextExpiring.getExpirationTimeMillis() < System.currentTimeMillis()) {
             expiringPlayers.poll();
             PlayerInfo targetPlayer = new PlayerInfo(nextExpiring.getUuid());

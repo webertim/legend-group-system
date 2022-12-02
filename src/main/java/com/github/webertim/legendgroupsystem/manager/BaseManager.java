@@ -53,7 +53,7 @@ public abstract class BaseManager<T, V extends Identifiable<T>> {
     public void update(V data, Consumer<Boolean> finalTask) {
         createSuccessBasedTaskChain(
                 () -> this.dataDao.createOrUpdate(data).getNumLinesChanged(),
-                () -> this.update(data.getId(), data),
+                () -> this.edit(data.getId(), data),
                 finalTask
         );
     }
@@ -99,12 +99,11 @@ public abstract class BaseManager<T, V extends Identifiable<T>> {
         onChange(data, Operation.INSERT);
     }
 
-    public void update(T id, V data) {
+    public void edit(T id, V data) {
         assert id.equals(data.getId());
-        assert this.dataMap.containsKey(data.getId());
 
         this.dataMap.put(id, data);
-        onChange(data, Operation.UPDATE);
+        onChange(data, Operation.EDIT);
     }
 
     public void remove(V data) {

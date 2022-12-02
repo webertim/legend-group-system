@@ -40,12 +40,14 @@ public class PlayerManager extends BaseManager<UUID, PlayerInfo> {
     public void insert(PlayerInfo data) {
         super.insert(data);
 
-        ExpiringPlayer expiringPlayer = new ExpiringPlayer(data.getId(), data.getExpirationTimeMillis());
-        this.expiringPlayers.remove(expiringPlayer);
+        removeAndAddExpiringPlayer(data);
+    }
 
-        if (data.getExpirationTimeMillis() != null) {
-            this.expiringPlayers.add(expiringPlayer);
-        }
+    @Override
+    public void edit(UUID id, PlayerInfo data) {
+        super.edit(id, data);
+
+        removeAndAddExpiringPlayer(data);
     }
 
     @Override
@@ -88,5 +90,14 @@ public class PlayerManager extends BaseManager<UUID, PlayerInfo> {
         Group playerGroup = getGroupInfo(player.getUniqueId());
 
         return playerGroup.getPrefix() + " " + player.getName();
+    }
+
+    private void removeAndAddExpiringPlayer(PlayerInfo data) {
+        ExpiringPlayer expiringPlayer = new ExpiringPlayer(data.getId(), data.getExpirationTimeMillis());
+        this.expiringPlayers.remove(expiringPlayer);
+
+        if (data.getExpirationTimeMillis() != null) {
+            this.expiringPlayers.add(expiringPlayer);
+        }
     }
 }
