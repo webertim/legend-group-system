@@ -13,7 +13,7 @@ public class Group implements Identifiable<String> {
     public static final String NAME_COLUMN = "name";
     public static final String PREFIX_COLUMN = "prefix";
     public static final String IS_DEFAULT_COLUMN = "is_default";
-    public static final Group DEFAULT = new Group("", "DEFAULT", "[default]");
+    public static final Group DEFAULT = new Group("", "DEFAULT", "[DEFAULT]", true);
 
     @DatabaseField(id = true, columnName = ID_COLUMN)
     private String id;

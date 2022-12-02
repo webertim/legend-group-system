@@ -20,6 +20,7 @@ import com.github.webertim.legendgroupsystem.listeners.PlayerJoinListener;
 import com.github.webertim.legendgroupsystem.manager.GroupManager;
 import com.github.webertim.legendgroupsystem.manager.PlayerManager;
 import com.github.webertim.legendgroupsystem.manager.SignManager;
+import com.github.webertim.legendgroupsystem.model.Group;
 import com.github.webertim.legendgroupsystem.util.PlayerUpdater;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -68,7 +69,16 @@ public final class LegendGroupSystem extends JavaPlugin {
         this.groupManager.registerOnChangeListener(
                 (group, operation) -> {
                     for (Player player : Bukkit.getOnlinePlayers()) {
-                        this.playerUpdater.updatePlayer(player);
+                        Group playerGroup = this.playerManager.getGroupInfo(player.getUniqueId());
+                        // Players only need to be updated if
+                        //  - they are in a group which is being updated
+                        //  - they are in a default group
+                        //      (because the DEFAULT group will be removed from them if a group is set to default in the database)
+                        if (playerGroup.getId().equals(group.getId())
+                                || playerGroup.isDefault()) {
+
+                            this.playerUpdater.updatePlayer(player);
+                        }
                     }
                 }
         );
@@ -76,6 +86,10 @@ public final class LegendGroupSystem extends JavaPlugin {
         this.playerManager.registerOnChangeListener(
                 (playerInfo, operation) -> {
                     Player targetPlayer = Bukkit.getPlayer(playerInfo.getId());
+                    if (targetPlayer == null) {
+                        return;
+                    }
+
                     this.playerUpdater.updatePlayer(targetPlayer);
                 }
         );
