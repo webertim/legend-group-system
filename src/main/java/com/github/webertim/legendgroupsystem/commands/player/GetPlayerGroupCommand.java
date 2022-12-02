@@ -35,7 +35,7 @@ public class GetPlayerGroupCommand extends BasePlayerCommand {
 
         player.sendMessage(
                 ChatColor.AQUA + playerGroup.getName() + " " + ChatColor.GREEN + playerGroup.getPrefix() + "\n"
-                    + ((playerInfo != null) ? ("Expires: " + playerInfo.getExpirationDateString()) : "")
+                    + ((playerInfo != null) ? (ChatColor.YELLOW + "Expires: " + playerInfo.getExpirationDateString()) : "")
         );
 
         return true;

@@ -6,6 +6,9 @@ import com.github.webertim.legendgroupsystem.model.ExpiringPlayer;
 import com.github.webertim.legendgroupsystem.model.Group;
 import com.github.webertim.legendgroupsystem.model.PlayerInfo;
 import com.j256.ormlite.dao.Dao;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.ScoreboardManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLException;
@@ -66,7 +69,7 @@ public class PlayerManager extends BaseManager<UUID, PlayerInfo> {
 
     public @NotNull Group getGroupInfo(UUID playerUuid) {
 
-        PlayerInfo targetPlayer = this.get(playerUuid);
+        PlayerInfo targetPlayer = get(playerUuid);
 
         if (targetPlayer == null) {
             return this.groupManager.getDefaultGroup();
@@ -79,5 +82,11 @@ public class PlayerManager extends BaseManager<UUID, PlayerInfo> {
         }
 
         return targetGroup;
+    }
+
+    public String buildPlayerName(Player player) {
+        Group playerGroup = getGroupInfo(player.getUniqueId());
+
+        return playerGroup.getPrefix() + " " + player.getName();
     }
 }
