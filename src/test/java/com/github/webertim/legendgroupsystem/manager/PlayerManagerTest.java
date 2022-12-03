@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.mockito.Mockito.*;
 
-class PlayerManagerTest extends BaseTest<UUID, PlayerInfo> {
+public class PlayerManagerTest extends BaseTest<UUID, PlayerInfo> {
 
     PlayerManager playerManager;
     boolean taskRan = false;

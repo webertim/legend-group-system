@@ -3,6 +3,18 @@ package com.github.webertim.legendgroupsystem;
 import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.events.*;
+import com.comphenix.protocol.reflect.EquivalentConverter;
+import com.comphenix.protocol.reflect.StructureModifier;
+import com.comphenix.protocol.wrappers.AutoWrapper;
+import com.comphenix.protocol.wrappers.BlockPosition;
+import com.comphenix.protocol.wrappers.WrappedBlockData;
+import com.comphenix.protocol.wrappers.nbt.NbtBase;
+import com.comphenix.protocol.wrappers.nbt.NbtCompound;
+import com.comphenix.protocol.wrappers.nbt.NbtFactory;
+import com.comphenix.protocol.wrappers.nbt.NbtWrapper;
 import com.github.webertim.legendgroupsystem.commands.KeywordCommand;
 import com.github.webertim.legendgroupsystem.commands.group.CreateGroupCommand;
 import com.github.webertim.legendgroupsystem.commands.group.DefaultGroupCommand;
@@ -22,14 +34,19 @@ import com.github.webertim.legendgroupsystem.manager.PlayerManager;
 import com.github.webertim.legendgroupsystem.manager.SignManager;
 import com.github.webertim.legendgroupsystem.model.database.Group;
 import com.github.webertim.legendgroupsystem.util.PlayerUpdater;
+import net.kyori.adventure.text.NBTComponentBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.lang.reflect.Field;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
-public class LegendGroupSystem extends JavaPlugin {
+public final class LegendGroupSystem extends JavaPlugin {
     private DatabaseConnector databaseConnector;
     private TaskChainFactory taskChainFactory;
     private BaseConfiguration config;
@@ -93,6 +110,48 @@ public class LegendGroupSystem extends JavaPlugin {
                     this.playerUpdater.updatePlayer(targetPlayer);
                 }
         );
+
+        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(this, PacketType.Play.Server.TILE_ENTITY_DATA) {
+            @Override
+            public void onPacketSending(PacketEvent event) {
+                PacketContainer packetContainer = event.getPacket();
+                BlockPosition blockPosition = packetContainer.getBlockPositionModifier().getValues().get(0);
+                NbtBase nbtBase = packetContainer.getNbtModifier().getValues().get(0);
+
+                if (!(nbtBase instanceof NbtCompound nbtCompound)) {
+                    return;
+                }
+
+                nbtCompound.put("Text1", "{\"text\":\"" + event.getPlayer().getName() + "\"}");
+
+                getLogger().info("Sent packet");
+            }
+        });
+
+        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(this, PacketType.Play.Server.MAP_CHUNK) {
+            @Override
+            public void onPacketSending(PacketEvent event) {
+                PacketContainer packetContainer = event.getPacket();
+                InternalStructure structure = packetContainer.getStructures().read(0);
+
+                EquivalentConverter<InternalStructure> converter;
+                try {
+                    Field converterField = InternalStructure.class.getDeclaredField("CONVERTER");
+                    converterField.setAccessible(true);
+                    converter = (EquivalentConverter<InternalStructure>) converterField.get(null);
+                } catch (NoSuchFieldException e) {
+                    throw new RuntimeException(e);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+
+                structure.getLists(converter).read(0).forEach(
+                        internalStructure -> getLogger().info(internalStructure.getNbtModifier().read(0).toString())
+                );
+
+                //getLogger().info(structure.getIntegers().read(0) + "");
+            }
+        });
     }
 
     private void registerListeners() {

@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
-class BaseManagerTest extends BaseTest<UUID, BaseManagerTest.TestData> {
+public class BaseManagerTest extends BaseTest<UUID, BaseManagerTest.TestData> {
     static final int INITIAL_DB_SIZE = 3;
 
     BaseManagerTest() {

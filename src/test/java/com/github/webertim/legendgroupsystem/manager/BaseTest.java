@@ -28,8 +28,6 @@ public class BaseTest<K, V extends Identifiable<K>> {
         this.clazz = clazz;
     }
 
-    @BeforeEach
-    @Order(0)
     void setup() throws SQLException {
         mockDb = new ArrayList<>(Arrays
                 .stream(new Object[INITIAL_DB_SIZE])
@@ -119,10 +117,6 @@ public class BaseTest<K, V extends Identifiable<K>> {
         );
     }
 
-    @Test
-    @BeforeEach
-    @Order(1)
-    @DisplayName("Test if the mocking is successful and the internal list is initialized correctly.")
     void testInitialization() {
         Assertions.assertEquals(INITIAL_DB_SIZE, mockDb.size());
     }

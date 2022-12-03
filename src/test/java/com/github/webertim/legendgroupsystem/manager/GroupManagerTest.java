@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
-class GroupManagerTest extends BaseTest<String, Group> {
+public class GroupManagerTest extends BaseTest<String, Group> {
 
     GroupManager groupManager;
 
@@ -82,7 +82,7 @@ class GroupManagerTest extends BaseTest<String, Group> {
         }
 
         groupManager.updateDefaultGroup(
-                new Group(),
+                new Group(""),
                 Assertions::assertTrue
         );
 

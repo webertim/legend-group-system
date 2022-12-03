@@ -5,6 +5,8 @@ api-version: 1.19
 prefix: LGS
 authors: [ webertim ]
 description: A simple group management plugin created as part of the application process.
+depend:
+  - ProtocolLib
 commands:
   group:
     description: Group commands
