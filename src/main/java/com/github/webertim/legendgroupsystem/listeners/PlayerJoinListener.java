@@ -7,6 +7,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+/**
+ * Player Join listener used to modify the displayed player name.
+ */
 public class PlayerJoinListener implements Listener {
 
     private final PlayerManager playerManager;
@@ -17,6 +20,11 @@ public class PlayerJoinListener implements Listener {
         this.playerUpdater = playerUpdater;
     }
 
+    /**
+     * The method handling the actual player join event.
+     *
+     * @param e Player join event data.
+     */
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         String prefixedPlayerName = this.playerManager.buildPlayerName(e.getPlayer());
