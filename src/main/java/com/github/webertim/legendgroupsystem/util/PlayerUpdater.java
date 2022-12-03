@@ -2,7 +2,6 @@ package com.github.webertim.legendgroupsystem.util;
 
 import com.github.webertim.legendgroupsystem.manager.PlayerManager;
 import com.github.webertim.legendgroupsystem.manager.SignManager;
-import com.github.webertim.legendgroupsystem.manager.enums.SignStatusEnum;
 import com.github.webertim.legendgroupsystem.model.database.Group;
 import com.github.webertim.legendgroupsystem.model.database.PlayerInfo;
 import net.kyori.adventure.text.Component;
@@ -46,7 +45,7 @@ public class PlayerUpdater {
                 .build()
                 .setPlayer(player);
 
-        this.signManager.updatePlayerAllSigns(player, SignStatusEnum.UPDATE);
+        this.signManager.updatePlayerAllSigns(player);
         player.playerListName(Component.text(prefixedPlayerName));
     }
 }

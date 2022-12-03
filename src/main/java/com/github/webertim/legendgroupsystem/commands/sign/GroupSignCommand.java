@@ -4,6 +4,8 @@ import com.github.webertim.legendgroupsystem.configuration.BaseConfiguration;
 import com.github.webertim.legendgroupsystem.manager.SignManager;
 import com.github.webertim.legendgroupsystem.model.database.PlayerGroupSign;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

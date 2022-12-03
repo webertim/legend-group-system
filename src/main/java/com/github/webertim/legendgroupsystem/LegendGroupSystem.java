@@ -5,6 +5,7 @@ import co.aikar.taskchain.TaskChain;
 import co.aikar.taskchain.TaskChainFactory;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.*;
 import com.comphenix.protocol.reflect.EquivalentConverter;
 import com.comphenix.protocol.reflect.StructureModifier;
@@ -28,7 +29,9 @@ import com.github.webertim.legendgroupsystem.configuration.BaseConfiguration;
 import com.github.webertim.legendgroupsystem.database.DatabaseConnector;
 import com.github.webertim.legendgroupsystem.database.DatabaseOptions;
 import com.github.webertim.legendgroupsystem.listeners.AsyncPlayerChatListener;
+import com.github.webertim.legendgroupsystem.listeners.MapChunkListener;
 import com.github.webertim.legendgroupsystem.listeners.PlayerJoinListener;
+import com.github.webertim.legendgroupsystem.listeners.TileEntityDataListener;
 import com.github.webertim.legendgroupsystem.manager.GroupManager;
 import com.github.webertim.legendgroupsystem.manager.PlayerManager;
 import com.github.webertim.legendgroupsystem.manager.SignManager;
@@ -110,54 +113,16 @@ public final class LegendGroupSystem extends JavaPlugin {
                     this.playerUpdater.updatePlayer(targetPlayer);
                 }
         );
-
-        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(this, PacketType.Play.Server.TILE_ENTITY_DATA) {
-            @Override
-            public void onPacketSending(PacketEvent event) {
-                PacketContainer packetContainer = event.getPacket();
-                BlockPosition blockPosition = packetContainer.getBlockPositionModifier().getValues().get(0);
-                NbtBase nbtBase = packetContainer.getNbtModifier().getValues().get(0);
-
-                if (!(nbtBase instanceof NbtCompound nbtCompound)) {
-                    return;
-                }
-
-                nbtCompound.put("Text1", "{\"text\":\"" + event.getPlayer().getName() + "\"}");
-
-                getLogger().info("Sent packet");
-            }
-        });
-
-        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(this, PacketType.Play.Server.MAP_CHUNK) {
-            @Override
-            public void onPacketSending(PacketEvent event) {
-                PacketContainer packetContainer = event.getPacket();
-                InternalStructure structure = packetContainer.getStructures().read(0);
-
-                EquivalentConverter<InternalStructure> converter;
-                try {
-                    Field converterField = InternalStructure.class.getDeclaredField("CONVERTER");
-                    converterField.setAccessible(true);
-                    converter = (EquivalentConverter<InternalStructure>) converterField.get(null);
-                } catch (NoSuchFieldException e) {
-                    throw new RuntimeException(e);
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-
-                structure.getLists(converter).read(0).forEach(
-                        internalStructure -> getLogger().info(internalStructure.getNbtModifier().read(0).toString())
-                );
-
-                //getLogger().info(structure.getIntegers().read(0) + "");
-            }
-        });
     }
 
     private void registerListeners() {
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(new AsyncPlayerChatListener(this.playerManager), this);
         pluginManager.registerEvents(new PlayerJoinListener(this.playerManager, this.playerUpdater), this);
+
+        ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
+        protocolManager.addPacketListener(new TileEntityDataListener(this, this.signManager));
+        protocolManager.addPacketListener(new MapChunkListener(this, this.signManager));
     }
 
     private void registerCommands() {

@@ -1,18 +1,21 @@
 package com.github.webertim.legendgroupsystem.manager;
 
+import com.comphenix.protocol.wrappers.nbt.NbtBase;
+import com.comphenix.protocol.wrappers.nbt.NbtCompound;
 import com.github.webertim.legendgroupsystem.LegendGroupSystem;
-import com.github.webertim.legendgroupsystem.manager.enums.SignStatusEnum;
 import com.github.webertim.legendgroupsystem.model.database.Group;
 import com.github.webertim.legendgroupsystem.model.Identifiable;
 import com.github.webertim.legendgroupsystem.model.database.PlayerGroupSign;
 import com.github.webertim.legendgroupsystem.model.database.PlayerInfo;
 import com.j256.ormlite.dao.Dao;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -21,69 +24,63 @@ import java.util.stream.Stream;
  */
 public class SignManager extends BaseManager<String, PlayerGroupSign> {
 
+    private HashMap<Location, PlayerGroupSign> signByLocation;
     private final PlayerManager playerManager;
     public SignManager(LegendGroupSystem legendGroupSystem, Dao<PlayerGroupSign, String> dao, PlayerManager playerManager) throws SQLException {
         super(legendGroupSystem, dao);
         this.playerManager = playerManager;
     }
 
-    /**
-     * Sends an update to all online players about one sign.
-     *
-     * @param sign Sign containing the location of the sign.
-     * @param signStatus Whether to remove or update the sign for each player.
-     */
-    public void updateAllPlayersSingleSign(PlayerGroupSign sign, SignStatusEnum signStatus) {
+    @Override
+    protected void initialize() throws SQLException {
+        signByLocation = new HashMap<>();
+        super.initialize();
+    }
+
+    public void updatePacketSignInformation(NbtBase nbtBase, Player receiver, Location blockLocation) {
+        if (!(containsLocation(blockLocation))) {
+            return;
+        }
+
+        if (!(nbtBase instanceof NbtCompound nbtCompound)) {
+            return;
+        }
+
+        List<Component> signContent = buildSignContent(receiver);
+
+        int lineNumber = 1;
+        for (Component signLine : signContent) {
+            String serializedComponent = GsonComponentSerializer.gson().serialize(signLine);
+            nbtCompound.put("Text" + lineNumber, serializedComponent);
+
+            lineNumber++;
+        }
+    }
+
+    public void updateAllPlayersSingleSign(PlayerGroupSign sign) {
         Bukkit.getScheduler().runTaskAsynchronously(
                 legendGroupSystem,
                 () -> {
                     for (Player player : Bukkit.getOnlinePlayers()) {
-                        sendSignChange(player, sign, signStatus);
+                        sendSignChange(player, sign);
                     }
                 }
         );
     }
-
-    /**
-     * Sends an update to one player about all signs.
-     *
-     * @param player The player to update.
-     * @param signStatus Whether to remove or update the signs for the player.
-     */
-    public void updatePlayerAllSigns(Player player, SignStatusEnum signStatus) {
+    public void updatePlayerAllSigns(Player player) {
         Bukkit.getScheduler().runTaskAsynchronously(
                 legendGroupSystem,
                 () -> {
                     for (PlayerGroupSign sign : this.getValues()) {
-                        sendSignChange(player, sign, signStatus);
+                        sendSignChange(player, sign);
                     }
                 }
         );
     }
-
-    private void sendSignChange(Player player, PlayerGroupSign sign, SignStatusEnum signStatus) {
-        switch (signStatus) {
-            case UPDATE -> sendSignUpdate(player, sign);
-            case REMOVE -> sendSignRemove(player, sign);
-        }
-    }
-
-    private void sendSignUpdate(Player player, PlayerGroupSign sign) {
-        player.sendBlockChange(
-                sign.getLocation(),
-                Material.OAK_SIGN.createBlockData()
-        );
-
+    private void sendSignChange(Player player, PlayerGroupSign sign) {
         player.sendSignChange(
                 sign.getLocation(),
-                buildSignContent(player)
-        );
-    }
-
-    private void sendSignRemove(Player player, PlayerGroupSign sign) {
-        player.sendBlockChange(
-                sign.getLocation(),
-                Material.AIR.createBlockData()
+                List.of(null, null, null, null)
         );
     }
 
@@ -103,6 +100,10 @@ public class SignManager extends BaseManager<String, PlayerGroupSign> {
         ).<Component>map(Component::text).toList();
     }
 
+    private boolean containsLocation(Location location) {
+        return this.signByLocation.containsKey(location);
+    }
+
     /**
      * Insert a new resource into the internal hash map.
      * Also updates all players about the sign update.
@@ -113,8 +114,8 @@ public class SignManager extends BaseManager<String, PlayerGroupSign> {
     @Override
     public void insert(PlayerGroupSign data) {
         super.insert(data);
-
-        updateAllPlayersSingleSign(data, SignStatusEnum.UPDATE);
+        this.signByLocation.put(data.getLocation().toBlockLocation(), data);
+        this.updateAllPlayersSingleSign(data);
     }
 
     /**
@@ -130,8 +131,8 @@ public class SignManager extends BaseManager<String, PlayerGroupSign> {
     @Override
     public void edit(String id, PlayerGroupSign data) {
         super.edit(id, data);
-
-        updateAllPlayersSingleSign(data, SignStatusEnum.UPDATE);
+        this.signByLocation.put(data.getLocation().toBlockLocation(), data);
+        this.updateAllPlayersSingleSign(data);
     }
 
     /**
@@ -144,8 +145,7 @@ public class SignManager extends BaseManager<String, PlayerGroupSign> {
     @Override
     public void remove(PlayerGroupSign data) {
         super.remove(data);
-
-        updateAllPlayersSingleSign(data, SignStatusEnum.REMOVE);
+        this.signByLocation.remove(data.getLocation().toBlockLocation());
+        this.updateAllPlayersSingleSign(data);
     }
 }
-
