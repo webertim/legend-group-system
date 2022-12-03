@@ -9,6 +9,9 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+/**
+ * Manager class for managing groups.
+ */
 public class GroupManager extends BaseManager<String, Group> {
 
 
@@ -16,6 +19,16 @@ public class GroupManager extends BaseManager<String, Group> {
         super(legendGroupSystem, dao);
     }
 
+    /**
+     * Adds some logic on top of the implementation of the {@link com.github.webertim.legendgroupsystem.manager.BaseManager}
+     * implementation. <br>
+     * 1. Checks if the group exists (the base implementation executes a craeteOrUpdate operation) <br>
+     * 2. Replaces null values of the new data with fields of the existing data point <br>
+     * 3. Ignores changes to the isDefault value, since this needs more logic and is therefore handled with a special method <br>
+     *
+     * @param data The data to update the database and the local map with (the Id of the object determines the updated object).
+     * @param finalTask The callback to execute after the update and edit.
+     */
     @Override
     public void update(Group data, Consumer<Boolean> finalTask) {
         Group targetGroup = this.get(data.getId());
@@ -38,6 +51,14 @@ public class GroupManager extends BaseManager<String, Group> {
         super.update(data, finalTask);
     }
 
+    /**
+     * Updates the default group by updating all entries of the group table and afterwards modifying the old default
+     * group and setting the new one.
+     *
+     * @param group Group object with an Id matching the new target default group. Other attributes are ignored.
+     * @param lastTask Sync callback to execute after the database interaction and update of the local datastructure
+     *                 Receives a boolean value representing the success of the operation.
+     */
     public void updateDefaultGroup(Group group, Consumer<Boolean> lastTask) {
         this.createSuccessBasedTaskChain(
                 () -> {
@@ -75,6 +96,12 @@ public class GroupManager extends BaseManager<String, Group> {
         );
     }
 
+    /**
+     * Searches the current default group and returns it. In case not group inside the database is marked as default
+     * the static default group is returned.
+     *
+     * @return The current default group.
+     */
     public Group getDefaultGroup() {
         return this
                 .findDefault()
