@@ -32,7 +32,7 @@ public abstract class BaseManager<T, V extends Identifiable<T>> {
     protected final LegendGroupSystem legendGroupSystem;
 
 
-    public BaseManager(LegendGroupSystem legendGroupSystem, Dao<V, T> dao) throws SQLException {
+    BaseManager(LegendGroupSystem legendGroupSystem, Dao<V, T> dao) throws SQLException {
         this.dataDao = dao;
         this.legendGroupSystem = legendGroupSystem;
 
@@ -135,7 +135,6 @@ public abstract class BaseManager<T, V extends Identifiable<T>> {
         try {
             return operationCallback.call() > 0;
         } catch (Exception e) {
-            legendGroupSystem.getLogger().warning(e.getMessage());
             return false;
         }
     }

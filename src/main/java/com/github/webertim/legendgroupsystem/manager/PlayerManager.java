@@ -19,7 +19,7 @@ import java.util.UUID;
  */
 public class PlayerManager extends BaseManager<UUID, PlayerInfo> {
 
-    private PriorityQueue<ExpiringPlayer> expiringPlayers;
+    PriorityQueue<ExpiringPlayer> expiringPlayers;
     private final GroupManager groupManager;
 
     public PlayerManager(LegendGroupSystem legendGroupSystem, Dao<PlayerInfo, UUID> dao, GroupManager groupManager) throws SQLException {
@@ -131,7 +131,13 @@ public class PlayerManager extends BaseManager<UUID, PlayerInfo> {
             return this.groupManager.getDefaultGroup();
         }
 
-        Group targetGroup = this.groupManager.get(targetPlayer.getGroup().getId());
+        Group playerGroupInfo = targetPlayer.getGroup();
+
+        if (playerGroupInfo == null) {
+            return this.groupManager.getDefaultGroup();
+        }
+
+        Group targetGroup = this.groupManager.get(playerGroupInfo.getId());
 
         if (targetGroup == null) {
             return this.groupManager.getDefaultGroup();

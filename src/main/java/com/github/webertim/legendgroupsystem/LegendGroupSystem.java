@@ -29,7 +29,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.sql.SQLException;
 
-public final class LegendGroupSystem extends JavaPlugin {
+public class LegendGroupSystem extends JavaPlugin {
     private DatabaseConnector databaseConnector;
     private TaskChainFactory taskChainFactory;
     private BaseConfiguration config;
