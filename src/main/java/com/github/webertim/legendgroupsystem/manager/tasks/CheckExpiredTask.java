@@ -2,7 +2,7 @@ package com.github.webertim.legendgroupsystem.manager.tasks;
 
 import com.github.webertim.legendgroupsystem.manager.PlayerManager;
 import com.github.webertim.legendgroupsystem.model.ExpiringPlayer;
-import com.github.webertim.legendgroupsystem.model.PlayerInfo;
+import com.github.webertim.legendgroupsystem.model.database.PlayerInfo;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.PriorityQueue;

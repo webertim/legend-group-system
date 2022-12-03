@@ -1,8 +1,8 @@
 package com.github.webertim.legendgroupsystem.database;
 
-import com.github.webertim.legendgroupsystem.model.Group;
-import com.github.webertim.legendgroupsystem.model.PlayerGroupSign;
-import com.github.webertim.legendgroupsystem.model.PlayerInfo;
+import com.github.webertim.legendgroupsystem.model.database.Group;
+import com.github.webertim.legendgroupsystem.model.database.PlayerGroupSign;
+import com.github.webertim.legendgroupsystem.model.database.PlayerInfo;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;

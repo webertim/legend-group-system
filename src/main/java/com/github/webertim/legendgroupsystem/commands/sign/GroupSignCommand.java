@@ -2,7 +2,7 @@ package com.github.webertim.legendgroupsystem.commands.sign;
 
 import com.github.webertim.legendgroupsystem.configuration.BaseConfiguration;
 import com.github.webertim.legendgroupsystem.manager.SignManager;
-import com.github.webertim.legendgroupsystem.model.PlayerGroupSign;
+import com.github.webertim.legendgroupsystem.model.database.PlayerGroupSign;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

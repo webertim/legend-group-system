@@ -3,7 +3,7 @@ package com.github.webertim.legendgroupsystem.commands.player;
 import com.github.webertim.legendgroupsystem.configuration.BaseConfiguration;
 import com.github.webertim.legendgroupsystem.manager.GroupManager;
 import com.github.webertim.legendgroupsystem.manager.PlayerManager;
-import com.github.webertim.legendgroupsystem.model.PlayerInfo;
+import com.github.webertim.legendgroupsystem.model.database.PlayerInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

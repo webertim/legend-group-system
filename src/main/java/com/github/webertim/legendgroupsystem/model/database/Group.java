@@ -1,11 +1,15 @@
-package com.github.webertim.legendgroupsystem.model;
+package com.github.webertim.legendgroupsystem.model.database;
 
 
+import com.github.webertim.legendgroupsystem.model.Identifiable;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.List;
 
+/**
+ * Class representing a group.
+ */
 @DatabaseTable(tableName = Group.TABLE_NAME)
 public class Group implements Identifiable<String> {
     public static final String TABLE_NAME = "groups";
@@ -35,6 +39,13 @@ public class Group implements Identifiable<String> {
         this(id, null, null);
     }
 
+    /**
+     * Creates a new group with isDefault being false.
+     *
+     * @param id Group id.
+     * @param name Group name.
+     * @param prefix Group prefix.
+     */
     public Group(String id, String name, String prefix) {
         this(id, name, prefix, false);
     }
@@ -75,6 +86,12 @@ public class Group implements Identifiable<String> {
         this.isDefault = isDefault;
     }
 
+    /**
+     * Creates a copy of this group only modifying the isDefault value with the provided value.
+     *
+     * @param isDefault The new value of isDefault for the group copy.
+     * @return A copy of this group with a new isDefault value.
+     */
     public Group copyWithDefault(boolean isDefault) {
         return new Group(
                 this.id,

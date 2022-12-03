@@ -1,7 +1,7 @@
 package com.github.webertim.legendgroupsystem.manager;
 
 import com.github.webertim.legendgroupsystem.LegendGroupSystem;
-import com.github.webertim.legendgroupsystem.model.Group;
+import com.github.webertim.legendgroupsystem.model.database.Group;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.UpdateBuilder;
 

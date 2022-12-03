@@ -1,5 +1,6 @@
-package com.github.webertim.legendgroupsystem.model;
+package com.github.webertim.legendgroupsystem.model.database;
 
+import com.github.webertim.legendgroupsystem.model.Identifiable;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -8,6 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
+/**
+ * Class representing player information.
+ */
 @DatabaseTable(tableName = PlayerInfo.TABLE_NAME)
 public class PlayerInfo implements Identifiable<UUID> {
     public static final String TABLE_NAME = "players";
@@ -49,6 +53,11 @@ public class PlayerInfo implements Identifiable<UUID> {
         return expirationTimeMillis;
     }
 
+    /**
+     * Returns the string representation of the expiration date and time.
+     *
+     * @return String representation of the expiration date and time
+     */
     public @Nullable String getExpirationDateString() {
         if (expirationTimeMillis == null) {
             return "";

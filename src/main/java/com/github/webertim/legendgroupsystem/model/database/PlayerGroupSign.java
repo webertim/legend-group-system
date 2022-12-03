@@ -1,10 +1,14 @@
-package com.github.webertim.legendgroupsystem.model;
+package com.github.webertim.legendgroupsystem.model.database;
 
+import com.github.webertim.legendgroupsystem.model.Identifiable;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
+/**
+ * Class representing a group sign.
+ */
 @DatabaseTable(tableName = PlayerGroupSign.TABLE_NAME)
 public class PlayerGroupSign implements Identifiable<String> {
     public static final String TABLE_NAME = "signs";
@@ -46,6 +50,11 @@ public class PlayerGroupSign implements Identifiable<String> {
         return this.id;
     }
 
+    /**
+     * A location object of this sign.
+     *
+     * @return The location of this sign.
+     */
     public Location getLocation() {
         return new Location(Bukkit.getWorld(this.world), this.x, this.y, this.z);
     }

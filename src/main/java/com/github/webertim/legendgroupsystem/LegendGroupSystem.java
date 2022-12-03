@@ -20,7 +20,7 @@ import com.github.webertim.legendgroupsystem.listeners.PlayerJoinListener;
 import com.github.webertim.legendgroupsystem.manager.GroupManager;
 import com.github.webertim.legendgroupsystem.manager.PlayerManager;
 import com.github.webertim.legendgroupsystem.manager.SignManager;
-import com.github.webertim.legendgroupsystem.model.Group;
+import com.github.webertim.legendgroupsystem.model.database.Group;
 import com.github.webertim.legendgroupsystem.util.PlayerUpdater;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
