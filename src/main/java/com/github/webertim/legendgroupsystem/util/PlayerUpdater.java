@@ -9,6 +9,10 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+/**
+ * Class carrying a method to update a player.
+ * This includes updating its list name, its scoreboard and the sign information.
+ */
 public class PlayerUpdater {
 
     private final PlayerManager playerManager;
@@ -19,6 +23,11 @@ public class PlayerUpdater {
         this.signManager = signManager;
     }
 
+    /**
+     * Method handling all necessary updates of a player.
+     *
+     * @param player The player to update.
+     */
     public void updatePlayer(Player player) {
         String prefixedPlayerName = this.playerManager.buildPlayerName(player);
         Group playerGroup = this.playerManager.getGroupInfo(player.getUniqueId());
