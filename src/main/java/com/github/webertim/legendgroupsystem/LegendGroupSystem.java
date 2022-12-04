@@ -88,15 +88,13 @@ public final class LegendGroupSystem extends JavaPlugin {
 
         this.groupPermissionsManager.registerOnChangeListener(
                 (groupPermissions, operation) -> {
+                    Group updatedGroup = groupPermissions.getId();
+
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         Group playerGroup = this.playerManager.getGroupInfo(player.getUniqueId());
-                        // Players only need to be updated if
-                        //  - they are in a group which is being updated
-                        //  - they are in a default group
-                        //      (because by setting a new default group players can change groups, if they are in a default group)
-                        if (playerGroup.getId().equals(groupPermissions.getId().getId())
-                                || playerGroup.isDefault()) {
 
+                        // Players only need to update if they are part of the group which got updated
+                        if (playerGroup.getId().equals(updatedGroup.getId())) {
                             this.playerUpdater.updatePermissions(player);
                         }
                     }

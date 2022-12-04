@@ -34,6 +34,7 @@ public class PlayerLoginListener implements Listener {
 
         permissibleField.setAccessible(true);
         permissibleField.set(player, new CustomPermissible(player, this.playerManager, this.groupPermissionsManager));
+        permissibleField.setAccessible(false);
     }
 
     private Field getPermissibleBaseField(Player player) {
