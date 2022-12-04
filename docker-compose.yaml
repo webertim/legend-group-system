@@ -20,3 +20,4 @@ services:
       - JAVAFLAGS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
     volumes:
       - ./server:/data
+      - ./plg:/data/plugins

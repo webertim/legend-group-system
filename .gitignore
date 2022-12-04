@@ -117,3 +117,7 @@ server/
 
 # Postgres Docker container
 data/
+
+plg/*
+
+!plg/ProtocolLib.jar
