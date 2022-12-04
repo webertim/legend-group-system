@@ -6,8 +6,10 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.HashSet;
-import java.util.UUID;
 
+/**
+ * Class containing information about group permissions.
+ */
 @DatabaseTable(tableName = GroupPermissions.TABLE_NAME)
 public class GroupPermissions implements Identifiable<Group> {
     public static final String TABLE_NAME = "group_permissions";
@@ -21,7 +23,7 @@ public class GroupPermissions implements Identifiable<Group> {
     private final Group group;
 
     @DatabaseField(columnName = PERMISSIONS_COLUMN, persisterClass = HashSetPersister.class)
-    private HashSet<String> permissions;
+    private final HashSet<String> permissions;
 
     public GroupPermissions() {
         this(null);
@@ -30,14 +32,6 @@ public class GroupPermissions implements Identifiable<Group> {
         this.id = null;
         this.group = group;
         this.permissions = new HashSet<>();
-    }
-
-    public HashSet<String> getPermissions() {
-        return permissions;
-    }
-
-    public void setPermissions(HashSet<String> permissions) {
-        this.permissions = permissions;
     }
 
     public boolean hasPermission(String permission) {

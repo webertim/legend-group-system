@@ -4,12 +4,14 @@ import com.github.webertim.legendgroupsystem.manager.GroupPermissionsManager;
 import com.github.webertim.legendgroupsystem.manager.PlayerManager;
 import com.github.webertim.legendgroupsystem.model.database.Group;
 import com.github.webertim.legendgroupsystem.model.database.GroupPermissions;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissibleBase;
 import org.bukkit.permissions.Permission;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Custom implementation of PermissibleBase to implement a custom way of checking permissions.
+ */
 public class CustomPermissible extends PermissibleBase {
     private final Player player;
     private final PlayerManager playerManager;
@@ -19,12 +21,6 @@ public class CustomPermissible extends PermissibleBase {
         this.player = player;
         this.playerManager = playerManager;
         this.groupPermissionsManager = groupPermissionsManager;
-
-        groupPermissionsManager.registerOnChangeListener(
-                (groupPermissions, operation) -> {
-                    recalculatePermissions();
-                }
-        );
     }
 
     @Override

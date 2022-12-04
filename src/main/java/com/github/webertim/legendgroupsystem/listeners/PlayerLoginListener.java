@@ -11,6 +11,9 @@ import org.bukkit.permissions.PermissibleBase;
 
 import java.lang.reflect.Field;
 
+/**
+ * Player Login listener used to add custom permission handler (using reflection).
+ */
 public class PlayerLoginListener implements Listener {
     private final PlayerManager playerManager;
     private final GroupPermissionsManager groupPermissionsManager;
@@ -23,7 +26,7 @@ public class PlayerLoginListener implements Listener {
     @EventHandler
     public void onPlayerLogin(PlayerLoginEvent e) throws IllegalAccessException {
         Player player = e.getPlayer();
-        Field permissibleField = getPermissableBaseField(player);
+        Field permissibleField = getPermissibleBaseField(player);
         if (permissibleField == null) {
             e.setResult(PlayerLoginEvent.Result.KICK_OTHER);
             return;
@@ -33,9 +36,9 @@ public class PlayerLoginListener implements Listener {
         permissibleField.set(player, new CustomPermissible(player, this.playerManager, this.groupPermissionsManager));
     }
 
-    private Field getPermissableBaseField(Player player) {
-        Field[] permissableField = player.getClass().getSuperclass().getDeclaredFields();
-        for (Field f : permissableField) {
+    private Field getPermissibleBaseField(Player player) {
+        Field[] permissibleField = player.getClass().getSuperclass().getDeclaredFields();
+        for (Field f : permissibleField) {
             if (f.getType().equals(PermissibleBase.class)) {
                 return f;
             }
