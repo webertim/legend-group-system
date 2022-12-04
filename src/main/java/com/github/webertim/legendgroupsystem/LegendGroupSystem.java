@@ -77,7 +77,7 @@ public final class LegendGroupSystem extends JavaPlugin {
                         // Players only need to be updated if
                         //  - they are in a group which is being updated
                         //  - they are in a default group
-                        //      (because the DEFAULT group will be removed from them if a group is set to default in the database)
+                        //      (because by setting a new default group players can change groups, if they are in a default group)
                         if (playerGroup.getId().equals(group.getId())
                                 || playerGroup.isDefault()) {
 

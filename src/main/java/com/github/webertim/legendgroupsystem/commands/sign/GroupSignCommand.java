@@ -4,20 +4,22 @@ import com.github.webertim.legendgroupsystem.configuration.BaseConfiguration;
 import com.github.webertim.legendgroupsystem.manager.SignManager;
 import com.github.webertim.legendgroupsystem.model.database.PlayerGroupSign;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
-import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Command used to create a sign displaying the group of the viewing player.
  */
 public class GroupSignCommand extends BaseSignCommand {
+    private static final String ADD_KEYWORD = "add";
+    private static final String REMOVE_KEYWORD = "remove";
     public GroupSignCommand(SignManager signManager, BaseConfiguration config) {
         super(signManager, config);
     }
@@ -28,8 +30,6 @@ public class GroupSignCommand extends BaseSignCommand {
             return false;
         }
 
-        String singName = args[0];
-
         if (!(sender instanceof Player player)) {
             String errorSignMessage = this.config.getMessage("errorSignCreate");
             sender.sendMessage(errorSignMessage);
@@ -38,16 +38,38 @@ public class GroupSignCommand extends BaseSignCommand {
 
         Location playerLocation = player.getLocation();
 
-        this.signManager.create(
-                new PlayerGroupSign(playerLocation.toBlockLocation()),
-                getSuccessCallback("successSignCreate", "errorSignCreate", sender)
-        );
+        Location blockLocation = playerLocation.toBlockLocation();
+        blockLocation.setPitch(0);
+        blockLocation.setYaw(0);
+
+        PlayerGroupSign targetSign = new PlayerGroupSign(blockLocation);
+        Consumer<Boolean> callback = getSuccessCallback("successSignCreate", "errorSignCreate", sender);
+
+        if (args[0].equals(ADD_KEYWORD)) {
+            this.signManager.create(
+                    targetSign,
+                    callback
+            );
+        } else if (args[0].equals(REMOVE_KEYWORD)) {
+            this.signManager.delete(
+                    targetSign,
+                    callback
+            );
+        } else {
+            return false;
+        }
 
         return true;
     }
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (args.length == 0) {
+            return Arrays.asList(
+                    ADD_KEYWORD,
+                    REMOVE_KEYWORD
+            );
+        }
         return null;
     }
 }
