@@ -7,6 +7,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import org.bukkit.Location;
 
 import java.sql.SQLException;
 import java.util.UUID;
@@ -18,7 +19,7 @@ import java.util.UUID;
 public class DatabaseConnector {
     private final Dao<Group, String> groupDao;
     private final Dao<PlayerInfo, UUID> playerInfoDao;
-    private final Dao<PlayerGroupSign, String> signDao;
+    private final Dao<PlayerGroupSign, Location> signDao;
     private final JdbcPooledConnectionSource connectionSource;
 
     /**
@@ -85,7 +86,7 @@ public class DatabaseConnector {
      *
      * @return The DAO for the signs table
      */
-    public Dao<PlayerGroupSign, String> getSignDao() {
+    public Dao<PlayerGroupSign, Location> getSignDao() {
         return signDao;
     }
 

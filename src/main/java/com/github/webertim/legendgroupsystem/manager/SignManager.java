@@ -15,30 +15,23 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
 /**
  * Manager class for managing signs.
  */
-public class SignManager extends BaseManager<String, PlayerGroupSign> {
+public class SignManager extends BaseManager<Location, PlayerGroupSign> {
 
-    private HashMap<Location, PlayerGroupSign> signByLocation;
     private final PlayerManager playerManager;
-    public SignManager(LegendGroupSystem legendGroupSystem, Dao<PlayerGroupSign, String> dao, PlayerManager playerManager) throws SQLException {
+    public SignManager(LegendGroupSystem legendGroupSystem, Dao<PlayerGroupSign, Location> dao, PlayerManager playerManager) throws SQLException {
         super(legendGroupSystem, dao);
         this.playerManager = playerManager;
     }
 
-    @Override
-    protected void initialize() throws SQLException {
-        signByLocation = new HashMap<>();
-        super.initialize();
-    }
-
     public void updatePacketSignInformation(NbtBase nbtBase, Player receiver, Location blockLocation) {
-        if (!(containsLocation(blockLocation))) {
+        if (!(contains(blockLocation))) {
             return;
         }
 
@@ -80,7 +73,7 @@ public class SignManager extends BaseManager<String, PlayerGroupSign> {
     private void sendSignChange(Player player, PlayerGroupSign sign) {
         player.sendSignChange(
                 sign.getLocation(),
-                List.of(null, null, null, null)
+                Arrays.asList(null, null, null, null)
         );
     }
 
@@ -100,10 +93,6 @@ public class SignManager extends BaseManager<String, PlayerGroupSign> {
         ).<Component>map(Component::text).toList();
     }
 
-    private boolean containsLocation(Location location) {
-        return this.signByLocation.containsKey(location);
-    }
-
     /**
      * Insert a new resource into the internal hash map.
      * Also updates all players about the sign update.
@@ -114,7 +103,7 @@ public class SignManager extends BaseManager<String, PlayerGroupSign> {
     @Override
     public void insert(PlayerGroupSign data) {
         super.insert(data);
-        this.signByLocation.put(data.getLocation().toBlockLocation(), data);
+
         this.updateAllPlayersSingleSign(data);
     }
 
@@ -129,9 +118,9 @@ public class SignManager extends BaseManager<String, PlayerGroupSign> {
      * @param data The data to update.
      */
     @Override
-    public void edit(String id, PlayerGroupSign data) {
+    public void edit(Location id, PlayerGroupSign data) {
         super.edit(id, data);
-        this.signByLocation.put(data.getLocation().toBlockLocation(), data);
+
         this.updateAllPlayersSingleSign(data);
     }
 
@@ -145,7 +134,7 @@ public class SignManager extends BaseManager<String, PlayerGroupSign> {
     @Override
     public void remove(PlayerGroupSign data) {
         super.remove(data);
-        this.signByLocation.remove(data.getLocation().toBlockLocation());
+
         this.updateAllPlayersSingleSign(data);
     }
 }

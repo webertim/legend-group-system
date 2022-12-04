@@ -39,7 +39,7 @@ public class GroupSignCommand extends BaseSignCommand {
         Location playerLocation = player.getLocation();
 
         this.signManager.create(
-                new PlayerGroupSign(singName, playerLocation),
+                new PlayerGroupSign(playerLocation.toBlockLocation()),
                 getSuccessCallback("successSignCreate", "errorSignCreate", sender)
         );
 
