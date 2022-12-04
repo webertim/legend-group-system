@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.junit.jupiter.api.*;
+import org.mockito.MockedStatic;
 
 import java.sql.SQLException;
 import java.util.UUID;
@@ -18,6 +19,7 @@ import static org.mockito.Mockito.*;
 
 public class PlayerManagerTest extends BaseTest<UUID, PlayerInfo> {
 
+    static MockedStatic<Bukkit> bukkitMockedStatic;
     PlayerManager playerManager;
     boolean taskRan = false;
 
@@ -27,7 +29,7 @@ public class PlayerManagerTest extends BaseTest<UUID, PlayerInfo> {
 
     @BeforeAll
     static void setupStatic() {
-        mockStatic(Bukkit.class);
+        bukkitMockedStatic = mockStatic(Bukkit.class);
     }
 
     @BeforeEach
@@ -191,5 +193,10 @@ public class PlayerManagerTest extends BaseTest<UUID, PlayerInfo> {
                 "[" + groupId + "]" + " " + mockPlayer.getName(),
                 playerManager.buildPlayerName(mockPlayer)
         );
+    }
+
+    @AfterAll
+    static void after() {
+        bukkitMockedStatic.close();
     }
 }

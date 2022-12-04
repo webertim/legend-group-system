@@ -7,6 +7,28 @@ authors: [ webertim ]
 description: A simple group management plugin created as part of the application process.
 depend:
   - ProtocolLib
+permissions:
+  legendgroupsystem.group:
+    description: Allows to create, update and delete groups as well as setting the default group. (/group and all subcommands)
+    default: op
+  legendgroupsystem.player:
+    description: Allows to manage a player by adding or removing its group. (/player and all subcommands)
+    default: op
+  legendgroupsystem.sign:
+    description: Allows to create a location where the content of placed signs is replaced by individual player group information (/groupsign command)
+    default: op
+  legendgroupsystem.info:
+    description: Allows player to view their current group as well as potential expiration time (/groupinfo command)
+    default: true
+  legendgroupsystem.*:
+    description: Allows to use all commands of this plugin.
+    default: false
+    children:
+      legendgroupsystem.group: true
+      legendgroupsystem.player: true
+      legendgroupsystem.sign: true
+      legendgroupsystem.info: true
+
 commands:
   group:
     description: Group commands
@@ -22,5 +44,5 @@ commands:
     permission: legendgroupsystem.info
   groupsign:
     description: Create a group rank sign
-    usage: /groupsign <signName>
+    usage: /groupsign < add | remove >
     permission: legendgroupsystem.sign

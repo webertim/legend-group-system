@@ -46,8 +46,6 @@ public class MapChunkListener extends PacketAdapter {
 
                     Location blockEntityLocation = new Location(receiver.getWorld(), x, y, z);
 
-                    plugin.getLogger().info(blockEntityLocation.toString());
-
                     NbtBase nbtBase = entity.getNbtModifier().getValues().get(0);
 
                     signManager.updatePacketSignInformation(nbtBase, receiver, blockEntityLocation);

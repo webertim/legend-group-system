@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.junit.jupiter.api.*;
+import org.mockito.MockedStatic;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -20,6 +21,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 class SignManagerTest extends BaseTest<Location, PlayerGroupSign> {
+    static MockedStatic<Bukkit> bukkitMockedStatic;
     SignManager signManager;
     private List<Player> mockPlayers;
     private HashMap<UUID, String> playerNames;
@@ -29,7 +31,7 @@ class SignManagerTest extends BaseTest<Location, PlayerGroupSign> {
 
     @BeforeAll
     static void setupStatic() {
-        mockStatic(Bukkit.class);
+        bukkitMockedStatic = mockStatic(Bukkit.class);
     }
 
     @BeforeEach
@@ -143,6 +145,11 @@ class SignManagerTest extends BaseTest<Location, PlayerGroupSign> {
         for (Player player : mockPlayers) {
             Assertions.assertTrue(player.getName().contains(updateId + ""));
         }
+    }
+
+    @AfterAll
+    static void after() {
+        bukkitMockedStatic.close();
     }
 
     private Player createMockPlayer(UUID uuid, String name) {
