@@ -41,4 +41,23 @@ public class CustomPermissible extends PermissibleBase {
     public boolean hasPermission(@NotNull Permission perm) {
         return hasPermission(perm.getName());
     }
+
+    @Override
+    public boolean isPermissionSet(@NotNull String name) {
+        Group playerGroup = this.playerManager.getGroupInfo(this.player.getUniqueId());
+        GroupPermissions groupPermissions = this.groupPermissionsManager.get(playerGroup);
+
+        boolean groupPermissionSet = false;
+
+        if (groupPermissions != null) {
+            groupPermissionSet = groupPermissions.hasPermission(name.toLowerCase());
+        }
+
+        return groupPermissionSet | super.isPermissionSet(name);
+    }
+
+    @Override
+    public boolean isPermissionSet(@NotNull Permission perm) {
+        return isPermissionSet(perm.getName());
+    }
 }

@@ -29,6 +29,23 @@ public class PlayerUpdater {
      */
     public void updatePlayer(Player player) {
         String prefixedPlayerName = this.playerManager.buildPlayerName(player);
+
+        updateSigns(player);
+        updatePermissions(player);
+        updateScoreboard(player, prefixedPlayerName);
+        updateTabList(player, prefixedPlayerName);
+    }
+
+    private void updateSigns(Player player) {
+        this.signManager.updatePlayerAllSigns(player);
+    }
+
+    public void updatePermissions(Player player) {
+        player.recalculatePermissions();
+        player.updateCommands();
+    }
+
+    private void updateScoreboard(Player player, String prefixedPlayerName) {
         Group playerGroup = this.playerManager.getGroupInfo(player.getUniqueId());
         PlayerInfo playerInfo = playerManager.get(player.getUniqueId());
 
@@ -44,8 +61,9 @@ public class PlayerUpdater {
                 .addLine(expirationString)
                 .build()
                 .setPlayer(player);
+    }
 
-        this.signManager.updatePlayerAllSigns(player);
+    private void updateTabList(Player player, String prefixedPlayerName) {
         player.playerListName(Component.text(prefixedPlayerName));
     }
 }

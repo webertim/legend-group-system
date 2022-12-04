@@ -25,6 +25,8 @@ i18n:
       playerJoin: "ist dem Spiel beigetreten"
       successSignCreate: "§aRang-Schild erstellt."
       errorSignCreate: "§cRang-Schild konnte nicht erstellt werden. Eventuell existiert an ihrer Position kein Schild."
+      successSignRemove: "§aRang-Schild entfernt."
+      errorSignRemove: "§cRang-Schild konnte nicht entfernt werden. Eventuell existiert an ihrer Position kein Schild."
       successGroupPermissions: "§aBerechtigungen angepasst."
       errorGroupPermissions: "§cFehler beim Anpassen der Berechtigungen."
     en:
@@ -47,6 +49,8 @@ i18n:
       playerJoin: "Joined the game"
       successSignCreate: "§aRank sign created."
       errorSignCreate: "§cRank sign could not be created. Make sure you are standing on a sign."
+      successSignRemove: "§aRank sign removed."
+      errorSignRemove: "§cRank sign could not be removed. Make sure you are standing on a sign."
       successGroupPermissions: "§aPermissions adjusted."
       errorGroupPermissions: "§cAn error occurred while adjusting the permissions."
 

@@ -43,17 +43,16 @@ public class GroupSignCommand extends BaseSignCommand {
         blockLocation.setYaw(0);
 
         PlayerGroupSign targetSign = new PlayerGroupSign(blockLocation);
-        Consumer<Boolean> callback = getSuccessCallback("successSignCreate", "errorSignCreate", sender);
 
         if (args[0].equals(ADD_KEYWORD)) {
             this.signManager.create(
                     targetSign,
-                    callback
+                    getSuccessCallback("successSignCreate", "errorSignCreate", sender)
             );
         } else if (args[0].equals(REMOVE_KEYWORD)) {
             this.signManager.delete(
                     targetSign,
-                    callback
+                    getSuccessCallback("successSignRemove", "errorSignRemove", sender)
             );
         } else {
             return false;
