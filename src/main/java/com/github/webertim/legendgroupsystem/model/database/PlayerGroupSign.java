@@ -4,7 +4,6 @@ import com.github.webertim.legendgroupsystem.database.persisters.LocationPersist
 import com.github.webertim.legendgroupsystem.model.Identifiable;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 /**

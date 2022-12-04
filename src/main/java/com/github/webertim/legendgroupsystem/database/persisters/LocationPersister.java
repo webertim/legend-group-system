@@ -1,7 +1,6 @@
 package com.github.webertim.legendgroupsystem.database.persisters;
 
 import com.google.gson.Gson;
-import com.j256.ormlite.field.BaseFieldConverter;
 import com.j256.ormlite.field.FieldType;
 import com.j256.ormlite.field.SqlType;
 import com.j256.ormlite.field.types.BaseDataType;
@@ -31,19 +30,18 @@ public class LocationPersister extends BaseDataType {
     }
 
     @Override
-    public Object parseDefaultString(FieldType fieldType, String s) throws SQLException {
+    public Object parseDefaultString(FieldType fieldType, String s) {
         System.out.println(s);
         return new Location(Bukkit.getWorld("world"), 0, 0, 0);
     }
 
     @Override
     public Object resultToSqlArg(FieldType fieldType, DatabaseResults databaseResults, int i) throws SQLException {
-        String locationString = databaseResults.getString(i);
-        return locationString;
+        return databaseResults.getString(i);
     }
 
     @Override
-    public Object sqlArgToJava(FieldType fieldType, Object sqlArg, int columnPos) throws SQLException {
+    public Object sqlArgToJava(FieldType fieldType, Object sqlArg, int columnPos) {
         String data = (String) sqlArg;
         Map map = new Gson().fromJson(data, Map.class);
 
@@ -57,7 +55,7 @@ public class LocationPersister extends BaseDataType {
     }
 
     @Override
-    public Object javaToSqlArg(FieldType fieldType, Object javaObject) throws SQLException {
+    public Object javaToSqlArg(FieldType fieldType, Object javaObject) {
         Location location = (Location) javaObject;
 
         return stringifyLocation(location);
@@ -69,7 +67,7 @@ public class LocationPersister extends BaseDataType {
     }
 
     private String stringifyLocation(Location location) {
-        Map locationMap = new HashMap();
+        Map<String, Object> locationMap = new HashMap<>();
         locationMap.put(WORLD_KEY, location.getWorld().getName());
         locationMap.put(X_KEY, location.getBlockX());
         locationMap.put(Y_KEY, location.getBlockY());

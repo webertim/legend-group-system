@@ -93,7 +93,7 @@ public class DatabaseConnector {
     /**
      * Close the database connection.
      *
-     * @throws Exception
+     * @throws Exception If closing the connection fails.
      */
     public void close() throws Exception {
         connectionSource.close();

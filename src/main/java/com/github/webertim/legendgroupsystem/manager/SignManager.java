@@ -30,6 +30,13 @@ public class SignManager extends BaseManager<Location, PlayerGroupSign> {
         this.playerManager = playerManager;
     }
 
+    /**
+     * Updates a packet to render the group information on a sign if this sign is manages by this class.
+     *
+     * @param nbtBase The nbt data of the sign.
+     * @param receiver The receiving player
+     * @param blockLocation The location of the sign which has to be updated (potentially)
+     */
     public void updatePacketSignInformation(NbtBase nbtBase, Player receiver, Location blockLocation) {
         if (!(contains(blockLocation))) {
             return;
@@ -50,6 +57,11 @@ public class SignManager extends BaseManager<Location, PlayerGroupSign> {
         }
     }
 
+    /**
+     * Send a new sign packet to all players for one specific sign.
+     *
+     * @param sign The sign to update.
+     */
     public void updateAllPlayersSingleSign(PlayerGroupSign sign) {
         Bukkit.getScheduler().runTaskAsynchronously(
                 legendGroupSystem,
@@ -60,6 +72,12 @@ public class SignManager extends BaseManager<Location, PlayerGroupSign> {
                 }
         );
     }
+
+    /**
+     * Send a new sign update packet to one player for every registered sign.
+     *
+     * @param player The player to send the packet to.
+     */
     public void updatePlayerAllSigns(Player player) {
         Bukkit.getScheduler().runTaskAsynchronously(
                 legendGroupSystem,

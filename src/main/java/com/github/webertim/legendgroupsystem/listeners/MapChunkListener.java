@@ -62,9 +62,7 @@ public class MapChunkListener extends PacketAdapter {
             Field converterField = InternalStructure.class.getDeclaredField("CONVERTER");
             converterField.setAccessible(true);
             converter = (EquivalentConverter<InternalStructure>) converterField.get(null);
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
 
