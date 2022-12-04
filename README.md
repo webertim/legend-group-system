@@ -2,6 +2,9 @@
 
 Simple group system built for the application process of the Playlegend network.
 
+## Requirements
+This plugin depends on ProtocolLib.
+
 ## Run
 This plugin can simply be tested by building the jar with:
 
@@ -9,7 +12,7 @@ This plugin can simply be tested by building the jar with:
 mvn build
 ```
 
-and copying it to a 1.19.2 Paper Server. In the plugin config a Postgres database connection has to be specified.
+and copying it to a 1.19.2 Paper Server. In the plugin config a MySQL database connection has to be specified.
 
 Alternatively one can simply run:
 
