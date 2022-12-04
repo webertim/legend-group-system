@@ -1,6 +1,8 @@
 package com.github.webertim.legendgroupsystem.database;
 
+import com.github.webertim.legendgroupsystem.manager.GroupPermissionsManager;
 import com.github.webertim.legendgroupsystem.model.database.Group;
+import com.github.webertim.legendgroupsystem.model.database.GroupPermissions;
 import com.github.webertim.legendgroupsystem.model.database.PlayerGroupSign;
 import com.github.webertim.legendgroupsystem.model.database.PlayerInfo;
 import com.j256.ormlite.dao.Dao;
@@ -18,6 +20,7 @@ import java.util.UUID;
  */
 public class DatabaseConnector {
     private final Dao<Group, String> groupDao;
+    private final Dao<GroupPermissions, Group> groupPermissionsDao;
     private final Dao<PlayerInfo, UUID> playerInfoDao;
     private final Dao<PlayerGroupSign, Location> signDao;
     private final JdbcPooledConnectionSource connectionSource;
@@ -41,10 +44,12 @@ public class DatabaseConnector {
         this.connectionSource.setTestBeforeGet(true);
 
         groupDao = DaoManager.createDao(connectionSource, Group.class);
+        groupPermissionsDao = DaoManager.createDao(connectionSource, GroupPermissions.class);
         playerInfoDao = DaoManager.createDao(connectionSource, PlayerInfo.class);
         signDao = DaoManager.createDao(connectionSource, PlayerGroupSign.class);
 
         TableUtils.createTableIfNotExists(this.connectionSource, Group.class);
+        TableUtils.createTableIfNotExists(this.connectionSource, GroupPermissions.class);
         TableUtils.createTableIfNotExists(this.connectionSource, PlayerInfo.class);
         TableUtils.createTableIfNotExists(this.connectionSource, PlayerGroupSign.class);
     }
@@ -79,6 +84,11 @@ public class DatabaseConnector {
      */
     public Dao<PlayerInfo, UUID> getPlayerInfoDao() {
         return playerInfoDao;
+    }
+
+
+    public Dao<GroupPermissions, Group> getGroupPermissionsDao() {
+        return groupPermissionsDao;
     }
 
     /**

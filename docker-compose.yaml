@@ -1,13 +1,16 @@
 version: '3.8'
 services:
-  postgres:
-    image: postgres:latest
+  mysql:
+    image: mysql:latest
     environment:
-      - POSTGRES_PASSWORD=postgrespw
+      - MYSQL_ROOT_PASSWORD=pw
+      - MYSQL_DATABASE=default
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=pw
     volumes:
-      - ./data:/var/lib/postgresql
+      - ./data:/var/lib/mysql
     ports:
-      - 5432:5432
+      - 3306:3306
   server:
     image: marctv/minecraft-papermc-server:latest
     ports:

@@ -5,6 +5,7 @@ import com.github.webertim.legendgroupsystem.model.Identifiable;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -31,7 +32,6 @@ public class Group implements Identifiable<String> {
     @DatabaseField(defaultValue = "false", canBeNull = false, columnName = IS_DEFAULT_COLUMN)
     private boolean isDefault;
 
-    private List<String> permissions;
 
     public Group() {}
 
@@ -99,5 +99,19 @@ public class Group implements Identifiable<String> {
                 this.prefix,
                 isDefault
         );
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Group otherGroup)) {
+            return false;
+        }
+
+        return this.id.equals(otherGroup.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return this.id.hashCode();
     }
 }

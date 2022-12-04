@@ -19,10 +19,12 @@ public class LocationPersister extends BaseDataType {
     private static final String Y_KEY = "Y";
     private static final String Z_KEY = "Z";
 
-    private static final LocationPersister instance = new LocationPersister(SqlType.STRING);
+    private final Gson parser = new Gson();
 
-    private LocationPersister(SqlType sqlType) {
-        super(sqlType);
+    private static final LocationPersister instance = new LocationPersister();
+
+    private LocationPersister() {
+        super(SqlType.STRING);
     }
 
     public static LocationPersister getSingleton() {
@@ -43,7 +45,7 @@ public class LocationPersister extends BaseDataType {
     @Override
     public Object sqlArgToJava(FieldType fieldType, Object sqlArg, int columnPos) {
         String data = (String) sqlArg;
-        Map map = new Gson().fromJson(data, Map.class);
+        Map map = parser.fromJson(data, Map.class);
 
         World world = Bukkit.getWorld((String) map.get(WORLD_KEY));
         double x = (Double) map.get(X_KEY);
@@ -73,6 +75,6 @@ public class LocationPersister extends BaseDataType {
         locationMap.put(Y_KEY, location.getBlockY());
         locationMap.put(Z_KEY, location.getBlockZ());
 
-        return new Gson().toJson(locationMap);
+        return parser.toJson(locationMap);
     }
 }

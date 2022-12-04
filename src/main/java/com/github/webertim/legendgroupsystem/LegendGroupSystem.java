@@ -6,10 +6,7 @@ import co.aikar.taskchain.TaskChainFactory;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.github.webertim.legendgroupsystem.commands.KeywordCommand;
-import com.github.webertim.legendgroupsystem.commands.group.CreateGroupCommand;
-import com.github.webertim.legendgroupsystem.commands.group.DefaultGroupCommand;
-import com.github.webertim.legendgroupsystem.commands.group.DeleteGroupCommand;
-import com.github.webertim.legendgroupsystem.commands.group.UpdateGroupCommand;
+import com.github.webertim.legendgroupsystem.commands.group.*;
 import com.github.webertim.legendgroupsystem.commands.player.AddPlayerGroupCommand;
 import com.github.webertim.legendgroupsystem.commands.player.GetPlayerGroupCommand;
 import com.github.webertim.legendgroupsystem.commands.player.RemovePlayerGroupCommand;
@@ -17,11 +14,9 @@ import com.github.webertim.legendgroupsystem.commands.sign.GroupSignCommand;
 import com.github.webertim.legendgroupsystem.configuration.BaseConfiguration;
 import com.github.webertim.legendgroupsystem.database.DatabaseConnector;
 import com.github.webertim.legendgroupsystem.database.DatabaseOptions;
-import com.github.webertim.legendgroupsystem.listeners.AsyncPlayerChatListener;
-import com.github.webertim.legendgroupsystem.listeners.MapChunkListener;
-import com.github.webertim.legendgroupsystem.listeners.PlayerJoinListener;
-import com.github.webertim.legendgroupsystem.listeners.TileEntityDataListener;
+import com.github.webertim.legendgroupsystem.listeners.*;
 import com.github.webertim.legendgroupsystem.manager.GroupManager;
+import com.github.webertim.legendgroupsystem.manager.GroupPermissionsManager;
 import com.github.webertim.legendgroupsystem.manager.PlayerManager;
 import com.github.webertim.legendgroupsystem.manager.SignManager;
 import com.github.webertim.legendgroupsystem.model.database.Group;
@@ -38,6 +33,7 @@ public final class LegendGroupSystem extends JavaPlugin {
     private TaskChainFactory taskChainFactory;
     private BaseConfiguration config;
     private GroupManager groupManager;
+    private GroupPermissionsManager groupPermissionsManager;
     private PlayerManager playerManager;
     private SignManager signManager;
     private PlayerUpdater playerUpdater;
@@ -56,6 +52,7 @@ public final class LegendGroupSystem extends JavaPlugin {
 
         try {
             this.groupManager = new GroupManager(this, databaseConnector.getGroupDao());
+            this.groupPermissionsManager = new GroupPermissionsManager(this, databaseConnector.getGroupPermissionsDao());
             this.playerManager = new PlayerManager(this, databaseConnector.getPlayerInfoDao(), this.groupManager);
             this.signManager = new SignManager(this, databaseConnector.getSignDao(), this.playerManager);
         } catch (SQLException e) {
@@ -67,6 +64,8 @@ public final class LegendGroupSystem extends JavaPlugin {
         this.registerManagerCallbacks();
         this.registerListeners();
         this.registerCommands();
+
+
     }
 
     private void registerManagerCallbacks() {
@@ -103,6 +102,7 @@ public final class LegendGroupSystem extends JavaPlugin {
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(new AsyncPlayerChatListener(this.playerManager), this);
         pluginManager.registerEvents(new PlayerJoinListener(this.playerManager, this.playerUpdater), this);
+        pluginManager.registerEvents(new PlayerLoginListener(this.playerManager, this.groupPermissionsManager), this);
 
         ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
         protocolManager.addPacketListener(new TileEntityDataListener(this, this.signManager));
@@ -115,6 +115,7 @@ public final class LegendGroupSystem extends JavaPlugin {
             new KeywordCommand("update", new UpdateGroupCommand(this.groupManager, this.config)),
             new KeywordCommand("delete", new DeleteGroupCommand(this.groupManager, this.config)),
             new KeywordCommand("default", new DefaultGroupCommand(this.groupManager, this.config)),
+            new KeywordCommand("permission", new PermissionCommand(this.groupManager, this.config, this.groupPermissionsManager))
         }).register(this);
 
         new KeywordCommand("player", new KeywordCommand[]{

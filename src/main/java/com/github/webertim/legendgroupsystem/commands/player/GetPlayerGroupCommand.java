@@ -33,10 +33,16 @@ public class GetPlayerGroupCommand extends BasePlayerCommand {
         PlayerInfo playerInfo = this.playerManager.get(player.getUniqueId());
         Group playerGroup = this.playerManager.getGroupInfo(player.getUniqueId());
 
+        String expirationString = "";
+
+        if (playerInfo != null && !playerInfo.getExpirationDateString().isBlank()) {
+            expirationString = "\n" + ChatColor.YELLOW + "Expires: " + playerInfo.getExpirationDateString();
+
+        }
 
         player.sendMessage(
-                ChatColor.AQUA + playerGroup.getName() + " " + ChatColor.GREEN + playerGroup.getPrefix() + "\n"
-                    + ((playerInfo != null) ? (ChatColor.YELLOW + "Expires: " + playerInfo.getExpirationDateString()) : "")
+                ChatColor.AQUA + playerGroup.getName() + " " + ChatColor.GREEN + playerGroup.getPrefix()
+                + expirationString
         );
 
         return true;
