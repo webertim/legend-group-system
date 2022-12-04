@@ -113,7 +113,9 @@ buildNumber.properties
 run/
 
 # Docker MC Server
-server/
+server/*
+
+!server/eula.txt
 
 # Postgres Docker container
 data/

@@ -82,7 +82,7 @@
                                     <type>${project.packaging}</type>
                                 </artifactItem>
                             </artifactItems>
-                            <outputDirectory>server/plugins</outputDirectory>
+                            <outputDirectory>plg</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
